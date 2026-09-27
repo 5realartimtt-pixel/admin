@@ -1,0 +1,4480 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#15324b">
+<meta name="color-scheme" content="light">
+<meta name="referrer" content="no-referrer">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+<title>Kredit Skoring Sistemi</title>
+<style>
+  :root{
+    --bg-1:#eef4fb;
+    --bg-2:#f8fbff;
+    --purple:#2166f3;
+    --purple-light:#5b8df7;
+    --gold:#d59632;
+    --green:#159a68;
+    --red:#dc4d5a;
+    --amber:#d78a25;
+    --glass:#ffffff;
+    --glass-border:rgba(21,50,75,0.10);
+    --text:#183247;
+    --text-dim:#6b7d8d;
+    --navy:#15324b;
+    --soft-blue:#edf4ff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:
+      radial-gradient(circle at 8% 0%, rgba(33,102,243,0.14), transparent 38%),
+      radial-gradient(circle at 96% 12%, rgba(213,150,50,0.10), transparent 34%),
+      linear-gradient(160deg, var(--bg-1), var(--bg-2) 64%, #f2f8ff 100%);
+    color:var(--text);
+    padding-bottom:90px;
+  }
+  header.top{
+    padding:30px 18px 28px;
+    text-align:left;
+    background:
+      radial-gradient(circle at 88% 0%, rgba(91,141,247,0.42), transparent 30%),
+      linear-gradient(135deg, #15324b 0%, #1d4d72 62%, #2166f3 100%);
+    box-shadow:0 16px 34px rgba(21,50,75,0.18);
+  }
+  header.top h1{
+    margin:0;
+    font-size:clamp(1.35rem,4vw,1.75rem);
+    letter-spacing:-0.3px;
+    font-weight:750;
+    color:#fff;
+  }
+  header.top p{
+    margin:4px 0 0;
+    color:rgba(255,255,255,0.72);
+    font-size:0.85rem;
+  }
+  .container{
+    max-width:760px;
+    margin:0 auto;
+    padding:22px 16px 0;
+  }
+  .card{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 12px 30px rgba(27,70,110,0.08);
+  }
+  .card h2{
+    margin:0 0 14px;
+    font-size:1.06rem;
+    color:var(--navy);
+    font-weight:700;
+    letter-spacing:-0.1px;
+  }
+  .card h3{
+    margin:18px 0 10px;
+    font-size:0.85rem;
+    color:var(--gold);
+    font-weight:600;
+    text-transform:none;
+    border-top:1px solid var(--glass-border);
+    padding-top:14px;
+  }
+  .card h3:first-of-type{border-top:none;padding-top:0;}
+  label{
+    display:block;
+    font-size:0.78rem;
+    color:var(--text-dim);
+    margin:10px 0 5px;
+  }
+  input[type=text],input[type=number],select,textarea{
+    width:100%;
+    padding:12px 13px;
+    border-radius:12px;
+    border:1px solid var(--glass-border);
+    background:#f8fbff;
+    color:var(--text);
+    font-size:0.92rem;
+    outline:none;
+    transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  input:focus,select:focus,textarea:focus{
+    border-color:var(--purple-light);
+    background:#ffffff;
+    box-shadow:0 0 0 4px rgba(33,102,243,0.10);
+  }
+  textarea{min-height:60px;resize:vertical;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .btn{
+    display:inline-block;
+    width:100%;
+    padding:13px 16px;
+    margin-top:16px;
+    border:none;
+    border-radius:13px;
+    font-size:0.95rem;
+    font-weight:600;
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--purple),var(--purple-light));
+    color:#fff;
+    box-shadow:0 8px 18px rgba(33,102,243,0.18);
+    transition:transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  }
+  .btn:hover{filter:brightness(1.04);box-shadow:0 10px 22px rgba(33,102,243,0.24);}
+  .btn:active{transform:scale(0.98);}
+  .btn.secondary{
+    background:var(--soft-blue);
+    border:1px solid var(--glass-border);
+    color:var(--purple);
+    box-shadow:none;
+  }
+  .btn.danger{
+    background:rgba(224,69,79,0.09);
+    border:1px solid rgba(224,69,79,0.3);
+    color:var(--red);
+  }
+  .btn.small{
+    width:auto;
+    padding:8px 12px;
+    font-size:0.78rem;
+    margin-top:0;
+  }
+  .msg{
+    margin-top:12px;
+    padding:10px 12px;
+    border-radius:10px;
+    font-size:0.85rem;
+  }
+  .msg.ok{background:rgba(31,174,107,0.1);color:var(--green);border:1px solid rgba(31,174,107,0.25);}
+  .msg.err{background:rgba(224,69,79,0.1);color:var(--red);border:1px solid rgba(224,69,79,0.25);}
+  .msg.info{background:rgba(185,138,46,0.1);color:var(--gold);border:1px solid rgba(185,138,46,0.25);}
+  .personal-code-hint{
+    margin:-1px 0 10px;
+    color:var(--text-dim);
+    font-size:0.72rem;
+    line-height:1.4;
+  }
+
+  nav.tabs{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    display:flex;
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-top:1px solid rgba(21,50,75,0.12);
+    box-shadow:0 -8px 24px rgba(21,50,75,0.08);
+    z-index:50;
+  }
+  nav.tabs button{
+    flex:1;
+    background:none;
+    border:none;
+    color:#728596;
+    font-size:0.72rem;
+    padding:12px 4px 10px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    font-weight:600;
+    transition:color .18s ease, background .18s ease;
+  }
+  nav.tabs button .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:transparent;
+  }
+  nav.tabs button:hover{background:rgba(33,102,243,0.04);}
+  nav.tabs button.active{color:var(--purple);}
+  nav.tabs button.active .dot{background:var(--purple);}
+  nav.tabs button::before{font-size:1.08rem;line-height:1;}
+  nav.tabs button[data-tab="tab-axtaris"]::before{content:'⌂';}
+  nav.tabs button[data-tab="tab-kreditler"]::before{content:'▣';}
+  nav.tabs button[data-tab="tab-kredit-qeyd"]::before{content:'＋';}
+  nav.tabs button[data-tab="tab-budce"]::before{content:'◈';}
+  nav.tabs button[data-tab="tab-musteriler"]::before{content:'♙';}
+  nav.tabs button[data-tab="tab-admin"]::before{content:'✦';}
+
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .result-box{
+    text-align:center;
+    padding:26px 16px;
+    border-radius:16px;
+    margin-top:16px;
+    border:1px solid var(--glass-border);
+    background:linear-gradient(160deg, rgba(108,79,214,0.10), rgba(224,179,86,0.06));
+  }
+  .result-box .label{
+    font-size:0.78rem;
+    color:var(--text-dim);
+    letter-spacing:0.3px;
+  }
+  .result-box .amount{
+    font-size:2.6rem;
+    font-weight:700;
+    margin:6px 0 4px;
+    color:var(--purple);
+  }
+  .result-box .amount span{font-size:1.1rem;color:var(--text-dim);font-weight:500;}
+  .reject-box{
+    text-align:center;
+    padding:22px 16px;
+    border-radius:16px;
+    margin-top:16px;
+    background:rgba(224,69,79,0.07);
+    border:1px solid rgba(224,69,79,0.25);
+    color:var(--red);
+    font-weight:600;
+  }
+
+  .customer-item{
+    padding:12px;
+    background:#f8fbff;
+    border:1px solid var(--glass-border);
+    border-radius:12px;
+    margin-bottom:10px;
+  }
+  .customer-item .top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .customer-item .name{font-weight:600;font-size:0.92rem;}
+  .customer-item .fin{color:var(--text-dim);font-size:0.75rem;}
+  .customer-item .actions{
+    display:flex;gap:8px;margin-top:10px;
+  }
+  .customer-info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:14px;
+    font-size:0.82rem;
+  }
+  .customer-info-grid .item{
+    background:#f1f6fc;
+    padding:8px 10px;
+    border-radius:10px;
+  }
+  .customer-info-grid .item .k{color:var(--text-dim);font-size:0.7rem;display:block;}
+  .customer-info-grid .item .v{font-weight:600;}
+  .empty-state{
+    text-align:center;
+    color:var(--text-dim);
+    padding:30px 10px;
+    font-size:0.85rem;
+  }
+  .divider{height:1px;background:var(--glass-border);margin:14px 0;}
+  .sector-hint{font-size:0.72rem;color:var(--text-dim);margin-top:4px;}
+  .totals-box{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    margin-top:10px;padding:10px;border-radius:12px;
+     background:#f1f6fc;font-size:0.78rem;
+  }
+  .totals-box .t-item .k{display:block;color:var(--text-dim);font-size:0.68rem;}
+  .totals-box .t-item .v{font-weight:700;color:var(--purple);}
+
+  .family-member-row{
+    border:1px solid var(--glass-border);
+    background:#f9f8ff;
+    border-radius:12px;
+    padding:12px;
+    margin-top:10px;
+    position:relative;
+  }
+  .family-member-row .fm-title{
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--purple);
+    margin-bottom:6px;
+  }
+
+  /* ============ WAITING OVERLAY (design preserved as provided) ============ */
+  .wait-overlay{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    background:#FFFFFF;
+  }
+  .wait-screen{
+    width:100%;
+    max-width:430px;
+    min-height:100vh;
+    background:#FFFFFF;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:#17181A;
+  }
+  .wait-topbar{ padding:20px 20px 0 20px; }
+  .wait-back-btn{
+    background:none;
+    border:none;
+    padding:8px;
+    margin-left:-8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#1E96F2;
+  }
+  .wait-back-btn svg{ width:24px; height:24px; }
+  .wait-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:19vh;
+    text-align:center;
+  }
+  .progress-wrap{
+    position:relative;
+    width:190px;
+    height:190px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .progress-ring{
+    transform:rotate(-90deg);
+    width:190px;
+    height:190px;
+  }
+  .progress-ring circle{ fill:none; stroke-width:14; }
+  .ring-track{ stroke:#F2F2F3; }
+  .ring-progress{
+    stroke:#1E96F2;
+    stroke-linecap:butt;
+    transition:stroke-dashoffset 1s linear;
+  }
+  .hourglass-icon{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:34px;
+    height:34px;
+    color:#17181A;
+    transform:translate(-50%, -50%) rotate(0deg);
+    transform-origin:center center;
+    will-change:transform;
+    backface-visibility:hidden;
+  }
+  .hourglass-icon.spinning{ animation:hourglass-spin 2.6s linear infinite; }
+  @keyframes hourglass-spin{
+    from{ transform:translate(-50%, -50%) rotate(0deg); }
+    to{ transform:translate(-50%, -50%) rotate(360deg); }
+  }
+  .hourglass-icon svg{ width:100%; height:100%; }
+  .wait-title{
+    margin-top:36px;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-0.3px;
+    color:#17181A;
+    line-height:1.2;
+  }
+  .wait-subtitle{
+    margin-top:10px;
+    font-size:16px;
+    font-weight:400;
+    color:#A9ABB3;
+    line-height:1.4;
+  }
+  .wait-timer{
+    margin-top:18px;
+    font-size:34px;
+    font-weight:700;
+    color:#F03D3D;
+    letter-spacing:0.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  .wait-back-btn:focus-visible{
+    outline:2px solid #1E96F2;
+    outline-offset:2px;
+    border-radius:6px;
+  }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ring-progress{ transition:none; }
+    .hourglass-icon.spinning{ animation:none; }
+  }
+  @media (max-width:340px){
+    .progress-wrap{ width:170px; height:170px; }
+    .progress-ring{ width:170px; height:170px; }
+    .wait-title{ font-size:25px; }
+    .wait-timer{ font-size:30px; }
+  }
+
+  /* ============ DOCUMENT / SIGNATURE / FINAL OVERLAY ============ */
+  .doc-overlay{
+    display:none;
+    position:fixed; inset:0; z-index:80;
+    background:var(--bg-1);
+    overflow-y:auto;
+    padding:18px 14px 40px;
+  }
+  .doc-overlay.show{display:block;}
+  .doc-topbar{
+    display:flex; align-items:center; gap:10px;
+    max-width:640px; margin:0 auto 14px;
+  }
+  .doc-back-btn{
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--glass-border); background:#fff;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--purple);
+  }
+  .doc-topbar h2{margin:0;font-size:1rem;color:var(--purple);}
+  .doc-step{display:none; max-width:640px; margin:0 auto;}
+  .doc-step.active{display:block;}
+
+  .paper{
+    background:#fff;
+    border:1px solid var(--glass-border);
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 8px 24px rgba(80,70,160,0.08);
+    font-size:0.82rem;
+    line-height:1.5;
+  }
+  .paper h3.paper-title{
+    text-align:center; font-size:1rem; margin:0 0 4px; color:var(--text);
+    text-transform:uppercase; letter-spacing:0.4px;
+  }
+  .paper .paper-row{
+    display:flex; justify-content:space-between; gap:8px;
+    border-bottom:1px dashed var(--glass-border);
+    padding:6px 0; flex-wrap:wrap;
+  }
+  .paper .paper-row .k{color:var(--text-dim);}
+  .paper .paper-row .v{font-weight:600; text-align:right;}
+  .paper .paper-options{margin:8px 0; font-size:0.8rem;}
+  .paper .paper-options .opt{padding:2px 0;}
+  .paper .paper-options .opt.sel{font-weight:700;color:var(--purple);}
+  .paper .paper-terms{font-size:0.72rem; color:var(--text-dim); margin-top:10px; padding-top:10px; border-top:1px solid var(--glass-border);}
+  .paper table.sched{width:100%; border-collapse:collapse; margin-top:8px; font-size:0.75rem;}
+  .paper table.sched th, .paper table.sched td{border:1px solid var(--glass-border); padding:5px 6px; text-align:center;}
+  .paper table.sched th{background:#f6f4ff;}
+  .paper .sig-line{margin-top:16px; font-size:0.78rem;}
+
+  .sig-canvas-wrap{
+    border:1px dashed var(--glass-border);
+    border-radius:14px;
+    background:#fbfbfe;
+    touch-action:none;
+    position:relative;
+  }
+  .sig-canvas-wrap canvas{width:100%; height:220px; display:block; border-radius:14px;}
+
+  .final-screen{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:70vh; text-align:center; gap:18px;
+  }
+  .final-check{font-size:5rem;}
+  .final-back{
+    width:48px;height:48px;border-radius:50%;
+    border:1px solid var(--glass-border); background:#fff;color:var(--purple);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;
+  }
+
+  .amount-select-wrap{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+  .amount-chip{
+    padding:8px 14px; border-radius:10px; border:1px solid var(--glass-border);
+    background:#faf9ff; cursor:pointer; font-size:0.85rem; font-weight:600; color:var(--text);
+  }
+  .amount-chip.sel{background:var(--purple); color:#fff; border-color:var(--purple);}
+
+  .credit-item{
+    padding:16px; background:#f9fcff; border:1px solid var(--glass-border);
+    border-radius:16px; margin-bottom:12px;
+    box-shadow:0 6px 18px rgba(27,70,110,0.05);
+  }
+  .credit-item .top-row{display:flex; justify-content:space-between; align-items:center;}
+  .credit-item .type{font-weight:700; color:var(--purple); font-size:0.9rem;}
+  .credit-item .status{font-size:0.72rem; padding:3px 9px; border-radius:20px;}
+  .credit-item .status.aktiv{background:rgba(31,174,107,0.12); color:var(--green);}
+  .credit-item .status.baglanib{background:rgba(107,114,128,0.12); color:var(--text-dim);}
+  .credit-item .grid{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:10px; font-size:0.78rem;}
+  .credit-item .grid .item{background:#fff; border-radius:8px; padding:6px 8px;}
+  .credit-item .grid .item .k{display:block; color:var(--text-dim); font-size:0.68rem;}
+  .credit-item .grid .item .v{font-weight:600;}
+
+  .admin-hero{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:4px 2px 22px;
+  }
+  .admin-hero-mark{
+    width:48px;
+    height:48px;
+    flex:0 0 48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:15px;
+    background:linear-gradient(135deg,#2166f3,#6d9bff);
+    color:#fff;
+    font-size:1.35rem;
+    box-shadow:0 10px 20px rgba(33,102,243,0.22);
+  }
+  .admin-eyebrow{
+    margin:1px 0 4px;
+    color:var(--purple);
+    font-size:0.7rem;
+    font-weight:750;
+    letter-spacing:0.11em;
+    text-transform:uppercase;
+  }
+  .admin-hero h2{margin:0;color:var(--navy);font-size:1.3rem;letter-spacing:-0.3px;}
+  .admin-hero p{margin:6px 0 0;color:var(--text-dim);font-size:0.82rem;line-height:1.45;}
+  .admin-form-card{
+    border-top:4px solid var(--purple);
+    padding-top:18px;
+  }
+  .admin-product{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+    padding:12px 13px;
+    border-radius:13px;
+    background:linear-gradient(135deg,#f0f6ff,#f8fbff);
+    border:1px solid rgba(33,102,243,0.12);
+    color:var(--navy);
+    font-weight:700;
+  }
+  .admin-product::before{
+    content:'₼';
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    background:#dceaff;
+    color:var(--purple);
+    font-weight:800;
+  }
+  .admin-form-card .btn{margin-top:20px;}
+  .admin-sent{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:700;
+  }
+  .admin-sent::before{content:'✓';font-size:1.05rem;}
+
+  @media (max-width:520px){
+    .container{padding-left:12px;padding-right:12px;}
+    header.top{padding:26px 16px 24px;}
+    .card{padding:16px;border-radius:17px;}
+    nav.tabs button{font-size:0.62rem;padding-left:2px;padding-right:2px;}
+    nav.tabs button::before{font-size:0.98rem;}
+    .credit-item .grid{gap:5px;}
+  }
+</style>
+<style id="admin-polish-and-auth-style">
+  /*
+    Safe visual layer:
+    This block only adds presentation rules and does not replace the
+    existing application styles or event handlers.
+  */
+  :root{
+    --admin-shadow-soft:0 10px 28px rgba(21,50,75,.08);
+    --admin-shadow-hover:0 16px 34px rgba(21,50,75,.13);
+  }
+  body{
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  header.top{
+    position:relative;
+    overflow:hidden;
+  }
+  header.top::after{
+    content:'';
+    position:absolute;
+    inset:auto -8% -72px auto;
+    width:250px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    filter:blur(2px);
+    pointer-events:none;
+  }
+  .card{
+    box-shadow:var(--admin-shadow-soft);
+    transition:box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+  }
+  .card:hover{
+    border-color:rgba(33,102,243,.16);
+    box-shadow:var(--admin-shadow-hover);
+  }
+  .btn{
+    box-shadow:0 6px 14px rgba(33,102,243,.14);
+    transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  }
+  .btn:hover{
+    transform:translateY(-1px);
+    filter:saturate(1.06);
+    box-shadow:0 9px 18px rgba(33,102,243,.20);
+  }
+  .btn:active{transform:translateY(0);box-shadow:none;}
+  input[type=text],input[type=number],select,textarea{
+    box-shadow:inset 0 1px 1px rgba(21,50,75,.025);
+  }
+  nav.tabs{
+    box-shadow:0 10px 24px rgba(21,50,75,.07);
+    backdrop-filter:blur(12px);
+  }
+  .customer-item,.credit-item,.result-box,.totals-box{
+    transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  .customer-item:hover,.credit-item:hover{
+    border-color:rgba(33,102,243,.20);
+    box-shadow:0 8px 20px rgba(21,50,75,.07);
+  }
+
+  /* The page stays hidden until the local access check succeeds. */
+  html.admin-auth-pending,
+  html.admin-auth-pending body{
+    background:#0b1730 !important;
+  }
+  html.admin-auth-pending body > *:not(#adminAuthGate){
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+  #adminAuthGate{
+    position:fixed;
+    inset:0;
+    z-index:2147483647;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    color:#17324b;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(91,141,247,.30), transparent 34%),
+      radial-gradient(circle at 90% 90%, rgba(213,150,50,.18), transparent 35%),
+      linear-gradient(145deg,#0c1d39,#15324b 54%,#2166f3);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    opacity:1;
+    transition:opacity .22s ease, visibility .22s ease;
+  }
+  html:not(.admin-auth-pending) #adminAuthGate{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .admin-auth-card{
+    width:min(100%,430px);
+    padding:32px 28px 28px;
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:24px;
+    background:rgba(255,255,255,.96);
+    box-shadow:0 28px 70px rgba(0,0,0,.28);
+    text-align:center;
+    animation:adminAuthRise .34s ease both;
+  }
+  .admin-auth-mark{
+    display:grid;
+    place-items:center;
+    width:58px;
+    height:58px;
+    margin:0 auto 18px;
+    border-radius:18px;
+    color:#fff;
+    background:linear-gradient(135deg,#2166f3,#5b8df7);
+    box-shadow:0 10px 24px rgba(33,102,243,.25);
+    font-size:1.55rem;
+  }
+  .admin-auth-card h2{
+    margin:0;
+    color:#15324b;
+    font-size:1.35rem;
+    letter-spacing:-.25px;
+  }
+  .admin-auth-card p{
+    margin:8px 0 22px;
+    color:#6b7d8d;
+    font-size:.9rem;
+    line-height:1.5;
+  }
+  .admin-auth-card label{
+    margin:0 0 7px;
+    color:#52697b;
+    text-align:left;
+    font-weight:600;
+  }
+  .admin-auth-card input{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #d6e1eb;
+    border-radius:12px;
+    outline:none;
+    background:#f8fbff;
+    color:#183247;
+    font:inherit;
+    letter-spacing:.16em;
+    text-align:center;
+    transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .admin-auth-card input:focus{
+    border-color:#5b8df7;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(33,102,243,.12);
+  }
+  .admin-auth-submit{
+    width:100%;
+    margin-top:14px;
+    padding:13px 16px;
+    border:0;
+    border-radius:12px;
+    color:#fff;
+    background:linear-gradient(135deg,#2166f3,#5b8df7);
+    box-shadow:0 8px 18px rgba(33,102,243,.22);
+    cursor:pointer;
+    font:600 .95rem inherit;
+    transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  }
+  .admin-auth-submit:hover{
+    transform:translateY(-1px);
+    filter:saturate(1.06);
+    box-shadow:0 11px 22px rgba(33,102,243,.28);
+  }
+  .admin-auth-error{
+    min-height:20px;
+    margin:10px 0 0;
+    color:#c33d4b;
+    font-size:.78rem;
+    font-weight:600;
+  }
+  .admin-auth-card.shake{animation:adminAuthShake .28s ease both;}
+  @keyframes adminAuthRise{
+    from{opacity:0;transform:translateY(10px) scale(.98);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  @keyframes adminAuthShake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-7px);}
+    75%{transform:translateX(7px);}
+  }
+  @media (max-width:520px){
+    .admin-auth-card{padding:28px 20px 22px;border-radius:20px;}
+  }
+</style>
+<script>
+  /* Apply the lock before the body content is parsed to avoid a visual flash. */
+  document.documentElement.classList.add('admin-auth-pending');
+</script>
+<script>
+  /* Register the offline app shell only where service workers are supported safely. */
+  if ('serviceWorker' in navigator &&
+      (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./service-worker.js', {scope:'./'}).catch(function(){});
+    });
+  }
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="container">
+    <h1>Kredit Skoring Sistemi — Müraciət</h1>
+    <p>Biznes müştəriləri üçün daxili kredit limiti hesablama tətbiqi</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TAB: DAXİLİ MÜŞTƏRİLƏR -->
+  <section id="tab-musteriler" class="tab-panel">
+    <div class="card">
+      <h2>Yeni müştəri qeydiyyatı</h2>
+      <form id="customerForm" onsubmit="return false;">
+
+        <h3>Müştəri məlumatları</h3>
+        <label>Şəxsi kod *</label>
+        <input type="text" id="f_fin" required aria-describedby="personalCodeHintCustomer">
+        <div id="personalCodeHintCustomer" class="personal-code-hint">Bu kod şəxsiyyət vəsiqəsinin FIN kodu deyil. Yalnız bu şəxsi sistem daxilində istifadə olunan daxili koddur.</div>
+        <div class="row2">
+          <div><label>Ad *</label><input type="text" id="f_ad" required></div>
+          <div><label>Soyad *</label><input type="text" id="f_soyad" required></div>
+        </div>
+        <label>Ata adı</label>
+        <input type="text" id="f_ataAdi">
+        <div class="row2">
+          <div><label>Telefon</label><input type="text" id="f_telefon" placeholder="050XXXXXXX"></div>
+          <div><label>Ünvan</label><input type="text" id="f_unvan"></div>
+        </div>
+        <div class="row2">
+          <div><label>1-ci Qohum nömrəsi</label><input type="text" id="f_qohum1" placeholder="050XXXXXXX"></div>
+          <div><label>2-ci Qohum nömrəsi</label><input type="text" id="f_qohum2" placeholder="050XXXXXXX"></div>
+        </div>
+        <div class="row2">
+          <div><label>Cins</label>
+            <select id="f_cins">
+              <option value="kisi">Kişi</option>
+              <option value="qadin">Qadın</option>
+            </select>
+          </div>
+          <div><label>Yaş</label><input type="number" id="f_yas" min="18" max="100"></div>
+        </div>
+        <label>Ailə vəziyyəti</label>
+        <select id="f_aileVeziyyeti">
+          <option value="subay">Subay</option>
+          <option value="evli">Evli</option>
+          <option value="bosanmis">Boşanmış</option>
+          <option value="dul">Dul</option>
+        </select>
+        <div class="row2">
+          <div><label>Ailə üzvlərinin sayı</label><input type="number" id="f_aileSayi" min="1" value="1"></div>
+          <div><label>Himayəsində olan şəxslərin sayı</label><input type="number" id="f_himayeSayi" min="0" value="0"></div>
+        </div>
+
+        <h3>Ailə üzvləri</h3>
+        <div id="familyMembersContainer"></div>
+        <button type="button" class="btn secondary small" style="margin-top:10px;" onclick="addFamilyMemberRow()">+ Ailə üzvü əlavə et</button>
+
+        <h3>Gəlir</h3>
+        <label>Aylıq rəsmi gəlir (AZN)</label>
+        <input type="number" id="f_resmiGelir" min="0" value="0">
+        <label>Digər aylıq gəlir (AZN)</label>
+        <input type="number" id="f_digerGelir" min="0" value="0">
+        <label>Gəlirin sabitliyi</label>
+        <select id="f_gelirSabitliyi">
+          <option value="1.00">Sabit əməkhaqqı / uzunmüddətli iş</option>
+          <option value="0.95">Sabit biznes</option>
+          <option value="0.90">Kiçik sahibkar</option>
+          <option value="0.80">Komissiya ilə gəlir</option>
+          <option value="0.70">Mövsümi iş</option>
+          <option value="0.60">Qeyri-sabit gündəlik gəlir</option>
+        </select>
+        <label>İşlədiyi sahə</label>
+        <input type="text" id="f_isSahesi">
+        <label>İş təcrübəsi / fəaliyyət müddəti (ay)</label>
+        <input type="number" id="f_isTecrubesi" min="0" value="0">
+
+        <h3>Təqaüd / Pensiya</h3>
+        <div class="row2">
+          <div><label>Müştərinin təqaüdü varmı?</label>
+            <select id="f_teqaudVarmi"><option value="xeyr">Xeyr</option><option value="beli">Bəli</option></select>
+          </div>
+          <div><label>Təqaüd məbləği (AZN)</label><input type="number" id="f_teqaudMeblegi" min="0" value="0"></div>
+        </div>
+        <div class="row2">
+          <div><label>Evdə pensiya alan şəxs varmı?</label>
+            <select id="f_pensiyaAlanVarmi"><option value="xeyr">Xeyr</option><option value="beli">Bəli</option></select>
+          </div>
+          <div><label>Pensiya məbləği (AZN)</label><input type="number" id="f_pensiyaMeblegi" min="0" value="0"></div>
+        </div>
+
+        <h3>Xərclər</h3>
+        <label>Aylıq yaşayış xərcləri (AZN)</label>
+        <input type="number" id="f_yasayisXerci" min="0" value="0">
+        <div class="row2">
+          <div><label>Kirayə (AZN)</label><input type="number" id="f_kiraye" min="0" value="0"></div>
+          <div><label>Kommunal (AZN)</label><input type="number" id="f_kommunal" min="0" value="0"></div>
+        </div>
+        <div class="row2">
+          <div><label>Nəqliyyat/yanacaq (AZN)</label><input type="number" id="f_neqliyyat" min="0" value="0"></div>
+          <div><label>Təhsil xərcləri (AZN)</label><input type="number" id="f_tehsil" min="0" value="0"></div>
+        </div>
+        <label>Digər məcburi xərclər (AZN)</label>
+        <input type="number" id="f_digerXerc" min="0" value="0">
+
+        <h3>Digər borclar</h3>
+        <label>Digər borclar (AZN)</label>
+        <input type="number" id="f_digerBorc" min="0" value="0">
+        <p class="sector-hint">Aktiv kreditlər və zaminlik öhdəlikləri aşağıdakı "Kredit tarixçəsi" bölməsində ayrıca daxil edilir və sistem tərəfindən avtomatik toplanır.</p>
+
+        <h3>Biznes məlumatları</h3>
+        <label>Biznes fəaliyyəti varmı?</label>
+        <select id="f_biznesVarmi">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>Əsas fəaliyyət kateqoriyası</label>
+        <select id="f_biznesKateqoriya" onchange="onBusinessCategoryChange()">
+          <option value="">Seçin</option>
+        </select>
+        <label>Alt fəaliyyət</label>
+        <select id="f_biznesAltFealiyyet" disabled>
+          <option value="">Əvvəlcə kateqoriya seçin</option>
+        </select>
+        <label>Biznesin fəaliyyət müddəti (ay)</label>
+        <input type="number" id="f_biznesMuddeti" min="0" value="0">
+        <label>Aylıq biznes dövriyyəsi (AZN)</label>
+        <input type="number" id="f_biznesDovriyyesi" min="0" value="0">
+        <label>Biznes xərcləri (AZN)</label>
+        <input type="number" id="f_biznesXercleri" min="0" value="0">
+        <label>Biznesin şəxsə məxsusluğu / sahiblik payı (%)</label>
+        <input type="number" id="f_biznesPay" min="0" max="100" value="100">
+        <label>Mövsümi biznes olub-olmaması</label>
+        <select id="f_movsumiBiznes">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+
+        <h3>Aktivlər</h3>
+        <label>Öz evi varmı?</label>
+        <select id="f_evVarmi">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>Avtomobili varmı?</label>
+        <select id="f_avtoVarmi">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>Avtomobil kreditdədir?</label>
+        <select id="f_avtoKreditde">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>Əmlak haqqında məlumat</label>
+        <textarea id="f_emlakMelumati"></textarea>
+
+        <h3>Kart dövriyyəsi</h3>
+        <label>Şəxsi kartların ümumi aylıq dövriyyəsi (AZN, könüllü)</label>
+        <input type="number" id="f_kartDovriyyesi" min="0" value="0">
+
+        <h3>Təhsil</h3>
+        <label>Təhsil səviyyəsi</label>
+        <select id="f_tehsilSeviyyesi">
+          <option value="yoxdur">Təhsil yoxdur</option>
+          <option value="orta">Orta təhsil</option>
+          <option value="ali">Ali təhsil</option>
+        </select>
+
+        <h3>Cərimələr</h3>
+        <label>Aktiv cərimə statusu</label>
+        <select id="f_cerimeVarmi">
+          <option value="yoxdur">Aktiv cərimə yoxdur</option>
+          <option value="var">Aktiv cərimə var</option>
+        </select>
+        <label>Cərimə məbləği (AZN, əgər varsa)</label>
+        <input type="number" id="f_cerimeMeblegi" min="0" value="0">
+
+        <h3>Sağlamlıq</h3>
+        <label>Sağlamlıq vəziyyəti (könüllü)</label>
+        <select id="f_saglamlik">
+          <option value="">Qeyd olunmayıb</option>
+          <option value="yaxsi">Yaxşı</option>
+          <option value="orta">Orta</option>
+          <option value="pis">Pis</option>
+        </select>
+
+        <h3>Kredit tarixçəsi</h3>
+        <label>Neçə ədəd aktiv krediti var?</label>
+        <input type="number" id="f_aktivKreditSayi" min="0" value="0" oninput="onActiveLoanCountChange()">
+        <div id="activeLoansContainer"></div>
+        <div class="row2" style="margin-top:12px;">
+          <div><label>Bağlanmış kredit sayı</label><input type="number" id="f_baglanmisKreditSayi" min="0" value="0"></div>
+          <div><label>Son 12 ayda gecikmə sayı</label><input type="number" id="f_gecikmeSayi" min="0" value="0"></div>
+        </div>
+        <div class="row2">
+          <div><label>Bağlanmış kreditlərin ümumi məbləği (AZN)</label><input type="number" id="f_baglanmisKreditMeblegh" min="0" value="0"></div>
+          <div><label>Gecikmə ilə bağlanmış kredit sayı</label><input type="number" id="f_baglanmisGecikmeSayi" min="0" value="0"></div>
+        </div>
+        <label>Son bağlanmış kreditin tarixi</label>
+        <input type="text" id="f_sonBaglanmaTarixi" placeholder="gg.aa.iiii">
+        <label>Keçmiş (bağlanmış) kreditlərdə maksimum gecikmə günü</label>
+        <input type="number" id="f_maxGecikmeGunu" min="0" value="0">
+
+        <h3>Zaminlik öhdəlikləri</h3>
+        <label>Zamin olduğu kredit sayı</label>
+        <input type="number" id="f_zaminKreditSayi" min="0" value="0" oninput="onGuarantorLoanCountChange()">
+        <div id="guarantorLoansContainer"></div>
+        <label>Hazırda gecikmiş kredit varmı?</label>
+        <select id="f_hazirdaGecikmish">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>30 gündən çox gecikmə olubmu?</label>
+        <select id="f_over30">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>60 gündən çox gecikmə olubmu?</label>
+        <select id="f_over60">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>90 gündən çox gecikmə olubmu?</label>
+        <select id="f_over90">
+          <option value="xeyr">Xeyr</option>
+          <option value="beli">Bəli</option>
+        </select>
+        <label>Son kreditin bağlanma vəziyyəti</label>
+        <input type="text" id="f_sonKreditVeziyyeti" placeholder="Məs: Vaxtında bağlanıb">
+
+        <h3>Digər</h3>
+        <label>Əlavə risk qeydi</label>
+        <textarea id="f_riskQeydi"></textarea>
+
+        <button class="btn" id="saveBtn" onclick="saveCustomerFromForm()">QEYDƏ AL</button>
+        <button class="btn secondary" style="display:none;margin-top:8px;" id="cancelEditBtn" onclick="cancelEdit()">Ləğv et</button>
+        <div id="formMsg"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Qeydiyyatda olan müştərilər</h2>
+      <div id="customerListArea"></div>
+    </div>
+  </section>
+
+  <!-- TAB: KREDİT NƏTİCƏSİ -->
+  <section id="tab-axtaris" class="tab-panel active">
+    <div class="card">
+      <h2>Kredit Skoring Sistemi — Müraciət</h2>
+      <label>Şəxsi kod</label>
+      <input type="text" id="axtFin" placeholder="Məs: AA12345" autocomplete="off" aria-describedby="personalCodeHintSearch">
+      <div id="personalCodeHintSearch" class="personal-code-hint">Bu kod şəxsiyyət vəsiqəsinin FIN kodu deyil. Yalnız bu şəxsi sistem daxilində istifadə olunan daxili koddur.</div>
+      <label>Kredit növü</label>
+      <select id="axtKreditNovu">
+        <option value="">Seçin</option>
+        <option value="ani_avans">Ani Avans Krediti</option>
+        <option value="istehlak">İstehlak Krediti</option>
+        <option value="biznes">Biznes Krediti</option>
+        <option value="aqro">Aqro Krediti</option>
+        <option value="ortaBiznes">Orta Biznes Krediti</option>
+        <option value="ticaret">Ticarət Krediti</option>
+      </select>
+      <button class="btn" onclick="handleMuraciet()">Müraciət et</button>
+      <div id="axtMsg"></div>
+    </div>
+    <div id="axtResultArea"></div>
+  </section>
+
+  <!-- TAB: KREDİTLƏR -->
+  <section id="tab-kreditler" class="tab-panel">
+    <div class="card">
+      <h2>Borc/Kredit yoxlama və axtarış</h2>
+      <label>Şəxsi kod</label>
+      <input type="text" id="krFin" placeholder="Məs: AA12345" autocomplete="off" aria-describedby="personalCodeHintCredits">
+      <div id="personalCodeHintCredits" class="personal-code-hint">Bu kod şəxsiyyət vəsiqəsinin FIN kodu deyil. Yalnız bu şəxsi sistem daxilində istifadə olunan daxili koddur.</div>
+      <button class="btn" onclick="searchCreditsByFin()">Axtar</button>
+      <div id="krMsg"></div>
+    </div>
+    <div id="krResultArea"></div>
+  </section>
+
+  <!-- TAB: KREDİT QEYDƏ ALMA -->
+  <section id="tab-kredit-qeyd" class="tab-panel">
+    <div id="krAddCreditArea"></div>
+  </section>
+
+  <!-- TAB: BÜDCƏ -->
+  <section id="tab-budce" class="tab-panel">
+    <div class="card">
+      <h2>Büdcə</h2>
+      <label>Ümumi kredit büdcəsini daxil edin (AZN)</label>
+      <input type="number" id="budceMeblegi" min="0" step="1" placeholder="Məs: 300">
+      <button class="btn" onclick="saveGlobalBudget()">BÜDCƏNİ YADDA SAXLA</button>
+      <div id="budceMsg"></div>
+    </div>
+  </section>
+
+  <!-- TAB: MÜŞTƏRİ TƏTBİQİ ADMİN -->
+  <section id="tab-admin" class="tab-panel">
+    <div class="admin-hero">
+      <div class="admin-hero-mark" aria-hidden="true">✦</div>
+      <div>
+        <div class="admin-eyebrow">Ayrıca məlumat kanalı</div>
+        <h2>Müştəri Tətbiqi Admin</h2>
+        <p>Biznes krediti üzrə müştəri məlumatlarını ayrıca göndərin.</p>
+      </div>
+    </div>
+    <div class="card admin-form-card">
+      <div class="admin-product">Biznes Krediti</div>
+      <label>Şəxsi kod</label>
+      <input type="text" id="adminFin" autocomplete="off" aria-describedby="personalCodeHintAdmin">
+      <div id="personalCodeHintAdmin" class="personal-code-hint">Bu kod şəxsiyyət vəsiqəsinin FIN kodu deyil. Yalnız bu şəxsi sistem daxilində istifadə olunan daxili koddur.</div>
+      <label>Məbləğ</label>
+      <input type="number" id="adminMebleg" min="0">
+      <label>Müddət</label>
+      <input type="number" id="adminMuddet" min="1">
+      <label>Aylıq ödəniş</label>
+      <input type="number" id="adminAyliqOdenis" min="0">
+      <button class="btn" onclick="submitAdminApplication()">Göndər</button>
+      <div id="adminMsg"></div>
+    </div>
+  </section>
+
+  <!-- TAB: MÜRACİƏTLƏR -->
+  <section id="tab-muracietler" class="tab-panel">
+    <div class="card">
+      <h2>Müraciətlər</h2>
+      <div id="applicationsArea"></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="tabs">
+  <button data-tab="tab-axtaris" class="active" onclick="switchTab('tab-axtaris',this)">
+    <span class="dot"></span>Müraciət
+  </button>
+  <button data-tab="tab-kreditler" onclick="switchTab('tab-kreditler',this)">
+    <span class="dot"></span>Kreditlər
+  </button>
+  <button data-tab="tab-kredit-qeyd" onclick="switchTab('tab-kredit-qeyd',this)">
+    <span class="dot"></span>Kredit qeydə alma
+  </button>
+  <button data-tab="tab-budce" onclick="switchTab('tab-budce',this)">
+    <span class="dot"></span>Büdcə
+  </button>
+  <button data-tab="tab-musteriler" onclick="switchTab('tab-musteriler',this)">
+    <span class="dot"></span>Daxili Müştərilər
+  </button>
+  <button data-tab="tab-admin" onclick="switchTab('tab-admin',this)">
+    <span class="dot"></span>Admin
+  </button>
+  <button data-tab="tab-muracietler" onclick="switchTab('tab-muracietler',this)">
+    <span class="dot"></span>Müraciətlər
+  </button>
+</nav>
+
+<!-- ============ WAITING OVERLAY (design preserved from gozlemehissesi.html) ============ -->
+<div id="waitOverlay" class="wait-overlay" role="main" aria-label="Gözləmə ekranı">
+  <div class="wait-screen">
+    <header class="wait-topbar">
+      <button class="wait-back-btn" type="button" aria-label="Geri qayıt" onclick="cancelWaiting()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </header>
+    <section class="wait-content">
+      <div class="progress-wrap" role="img" aria-label="Gözləmə progresi">
+        <svg class="progress-ring" viewBox="0 0 190 190">
+          <circle class="ring-track" cx="95" cy="95" r="88"></circle>
+          <circle class="ring-progress" id="ringProgress" cx="95" cy="95" r="88"></circle>
+        </svg>
+        <span class="hourglass-icon spinning" id="hourglassIcon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 3H17M7 21H17M7 3C7 3 7 7.5 12 10.5C17 7.5 17 3 17 3M7 21C7 21 7 16.5 12 13.5C17 16.5 17 21 17 21"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+      <h1 class="wait-title" id="waitTitleText">Zəhmət olmasa, gözləyin</h1>
+      <p class="wait-subtitle" id="waitSubtitleText">Məlumatlarınızı nəzərdən keçiririk.</p>
+      <div class="wait-timer" id="timerDisplay" aria-live="polite">0:05</div>
+      <span class="sr-only" id="timerSrText">5 saniyə qaldı</span>
+    </section>
+  </div>
+</div>
+
+<!-- ============ RƏSMİLƏŞDİRMƏ / SƏNƏD / İMZA / SON OVERLAY ============ -->
+<div id="docOverlay" class="doc-overlay">
+  <div class="doc-topbar">
+    <button class="doc-back-btn" type="button" onclick="docOverlayBack()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <h2 id="docOverlayTitle">Rəsmiləşdirmə</h2>
+  </div>
+
+  <!-- STEP 1: ÇATIŞMAYAN MƏLUMATLAR -->
+  <div id="docStepMissing" class="doc-step">
+    <div class="card">
+      <h2>Əlavə məlumat</h2>
+      <div id="missingFieldsArea"></div>
+      <button class="btn" onclick="submitMissingFields()">Davam et</button>
+      <div id="missingMsg"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: SƏNƏD CANLI GÖRÜNÜŞÜ -->
+  <div id="docStepPreview" class="doc-step">
+    <div id="docPreviewArea"></div>
+    <div class="card">
+      <button class="btn" onclick="goToSertlerStage()">Şərtlərlə tanış ol və davam et</button>
+      <button class="btn secondary" style="margin-top:8px;" onclick="downloadCurrentDocument()">Sənədi yüklə</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: UĞURLU NƏTİCƏ -->
+  <div id="docStepSuccess" class="doc-step">
+    <div class="final-screen">
+      <div>Uğurla</div>
+    </div>
+  </div>
+
+  <!-- STEP 4: İMZA -->
+  <div id="docStepSign" class="doc-step">
+    <div class="card">
+      <h2>İmza</h2>
+      <p class="sector-hint">Zəhmət olmasa, aşağıdakı sahəyə barmaqla və ya qələm ilə imza atın.</p>
+      <div class="sig-canvas-wrap">
+        <canvas id="sigCanvas"></canvas>
+      </div>
+      <div class="row2" style="margin-top:12px;">
+        <button class="btn secondary" onclick="clearSignature()">Yenidən çək</button>
+        <button class="btn" onclick="confirmSignature()">Təsdiqlə</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: SON EKRAN -->
+  <div id="docStepFinal" class="doc-step">
+    <div class="final-screen">
+      <div class="final-check">✅️</div>
+      <button class="final-back" onclick="finishToStart()">&lt;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   STORAGE KEY
+   ============================================================ */
+const STORAGE_KEY = 'kredit_musterileri_v1';
+const APPLICATIONS_KEY = 'kredit_applications_v1';
+const CREDITS_KEY = 'kredit_credits_v1';
+const AUDIT_KEY = 'kredit_audit_v1';
+const SIGNATURES_KEY = 'kredit_signatures_v1';
+const SYSTEM_BUDGET_KEY = 'kredit_system_budget_v1';
+const ACTIVE_APPLICATION_POINTER_KEY = 'kredit_active_application_id';
+const BUSINESS_APPLICATIONS_V2_KEY = 'moneza_business_credit_applications_v2';
+let editingFin = null; // if set, form is in edit mode for this FIN
+let familyMemberCounter = 0;
+
+/* ============================================================
+   TELEFON YOXLANIŞI — icazə verilən prefikslər
+   ============================================================ */
+const VALID_PHONE_PREFIXES = ['050','051','055','070','099','010','077'];
+function isValidAzPhone(phone){
+  const digits = (phone||'').replace(/[^0-9]/g,'');
+  const norm = digits.length === 12 && digits.startsWith('994') ? '0' + digits.slice(3) : digits;
+  if(norm.length !== 10) return false;
+  return VALID_PHONE_PREFIXES.indexOf(norm.slice(0,3)) !== -1;
+}
+
+/* ============================================================
+   BİZNES FƏALİYYƏTİ KATEQORİYALARI (kaskad seçim)
+   ============================================================ */
+const BUSINESS_CATEGORIES = {
+  istehsalat: { label:'İstehsalat', subs:['Şirniyyat İstehsalı','Ərzaq İstehsalı','Mebel','Tikinti Materialları','Geyim İstehsalı','Tekstil (Parçaçılıq)','Süd Məhsulları','Digər'] },
+  aqro: { label:'Aqro', subs:['İstixana','Əkinçilik','Tərəvəzçilik','Meyvəçilik','Bağçılıq','Heyvandarlıq','Yem İstehsalı','Taxıl Əkini','Pambıqçılıq','Digər'] },
+  xidmet: { label:'Xidmət', subs:['Bərbər','Dərzi','Avtoyuma','Avtomobil Təmiri','Telefon Təmiri','Taksi Xidməti','Kuryer Xidməti','Tədris (Kurs)','Gözəllik Salonu','Digər'] },
+  ticaret_sahesi: { label:'Ticarət', subs:['Ərzaq Mağazası','Geyim Mağazası','Ayaqqabı Mağazası','Telefon Satışı','Kompüter Satışı','Məişət Texnikası','Tikinti Materialları','Mebel Satışı','Ehtiyat Hissələri','Parfüm Satışı','Oyuncaq Mağazası','Kənd Təsərrüfatı','Gül Mağazası','Şirniyyat Satışı','Çörək Satışı','Digər'] },
+  neqliyyat: { label:'Nəqliyyat', subs:['Sərnişin Daşıma','Yük Daşıma','Kamaz','Digər'] }
+};
+
+// Fəaliyyət kateqoriyasının scoring-ə təsiri: sabitlik, gəlir potensialı, mövsümilik, xalis qazanc əmsalı
+const SECTOR_PROFILE = {
+  istehsalat:   { stability:1.10, income:1.05, seasonality:0,   netProfit:1.05 },
+  aqro:         { stability:0.85, income:0.90, seasonality:2,   netProfit:0.90 },
+  xidmet:       { stability:1.10, income:1.00, seasonality:0,   netProfit:1.05 },
+  ticaret_sahesi:{ stability:1.00, income:1.10, seasonality:0.5,netProfit:1.00 },
+  neqliyyat:    { stability:0.90, income:1.00, seasonality:0.5, netProfit:0.95 }
+};
+
+function initBusinessCategorySelect(){
+  const sel = document.getElementById('f_biznesKateqoriya');
+  Object.keys(BUSINESS_CATEGORIES).forEach(key=>{
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = BUSINESS_CATEGORIES[key].label;
+    sel.appendChild(opt);
+  });
+}
+
+function onBusinessCategoryChange(){
+  const catKey = document.getElementById('f_biznesKateqoriya').value;
+  const subSel = document.getElementById('f_biznesAltFealiyyet');
+  subSel.innerHTML = '';
+  if(!catKey || !BUSINESS_CATEGORIES[catKey]){
+    subSel.innerHTML = '<option value="">Əvvəlcə kateqoriya seçin</option>';
+    subSel.disabled = true;
+    return;
+  }
+  subSel.disabled = false;
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = 'Seçin';
+  subSel.appendChild(placeholder);
+  BUSINESS_CATEGORIES[catKey].subs.forEach(sub=>{
+    const opt = document.createElement('option');
+    opt.value = sub;
+    opt.textContent = sub;
+    subSel.appendChild(opt);
+  });
+}
+
+/* ============================================================
+   DİNAMİK KREDİT/ZAMİNLİK BLOKLARI (aktiv kreditlər və zaminliklər)
+   ============================================================ */
+function buildLoanBlocks(containerId, count, existingData){
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  const n = Math.max(0, parseInt(count, 10) || 0);
+  for(let i = 0; i < n; i++){
+    const data = (existingData && existingData[i]) || {};
+    const row = document.createElement('div');
+    row.className = 'family-member-row loan-block';
+    row.innerHTML =
+      '<div class="fm-title">Kredit ' + (i + 1) + '</div>' +
+      '<div class="row2">' +
+        '<div><label>Kredit məbləği (AZN)</label><input type="number" class="lb-meblegh" min="0" value="' + (data.meblegh || 0) + '"></div>' +
+        '<div><label>Aylıq ödəniş (AZN)</label><input type="number" class="lb-odenis" min="0" value="' + (data.aylıqOdenis || 0) + '"></div>' +
+      '</div>' +
+      '<div class="row2">' +
+        '<div><label>Kredit müddəti (ay)</label><input type="number" class="lb-muddet" min="0" value="' + (data.muddet || 0) + '"></div>' +
+        '<div><label>Qalıq məbləğ (AZN)</label><input type="number" class="lb-qalig" min="0" value="' + (data.qaligMeblegh || 0) + '"></div>' +
+      '</div>' +
+      '<label>Gecikmə olubmu?</label>' +
+      '<select class="lb-gecikme">' +
+        '<option value="xeyr"' + (data.gecikmeOlub !== 'beli' ? ' selected' : '') + '>Xeyr</option>' +
+        '<option value="beli"' + (data.gecikmeOlub === 'beli' ? ' selected' : '') + '>Bəli</option>' +
+      '</select>' +
+      '<label>Maksimum gecikmə neçə gün olub?</label>' +
+      '<input type="number" class="lb-maxgecikme" min="0" value="' + (data.maxGecikme || 0) + '">' +
+      '<label>Kredit hazırda aktivdir?</label>' +
+      '<select class="lb-aktivdir">' +
+        '<option value="beli"' + (data.aktivdir !== 'xeyr' ? ' selected' : '') + '>Bəli</option>' +
+        '<option value="xeyr"' + (data.aktivdir === 'xeyr' ? ' selected' : '') + '>Xeyr</option>' +
+      '</select>';
+    container.appendChild(row);
+  }
+}
+
+function collectLoanBlocks(containerId){
+  const rows = document.querySelectorAll('#' + containerId + ' .loan-block');
+  const arr = [];
+  rows.forEach(r=>{
+    arr.push({
+      meblegh: parseFloat(r.querySelector('.lb-meblegh').value) || 0,
+      aylıqOdenis: parseFloat(r.querySelector('.lb-odenis').value) || 0,
+      muddet: parseFloat(r.querySelector('.lb-muddet').value) || 0,
+      gecikmeOlub: r.querySelector('.lb-gecikme').value,
+      maxGecikme: parseFloat(r.querySelector('.lb-maxgecikme').value) || 0,
+      aktivdir: r.querySelector('.lb-aktivdir').value,
+      qaligMeblegh: parseFloat(r.querySelector('.lb-qalig').value) || 0
+    });
+  });
+  return arr;
+}
+
+function onActiveLoanCountChange(){
+  const count = document.getElementById('f_aktivKreditSayi').value;
+  const existing = collectLoanBlocks('activeLoansContainer');
+  buildLoanBlocks('activeLoansContainer', count, existing);
+}
+
+function onGuarantorLoanCountChange(){
+  const count = document.getElementById('f_zaminKreditSayi').value;
+  const existing = collectLoanBlocks('guarantorLoansContainer');
+  buildLoanBlocks('guarantorLoansContainer', count, existing);
+}
+
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(id === 'tab-musteriler') renderCustomerList();
+  if(id === 'tab-kredit-qeyd') document.getElementById('krAddCreditArea').innerHTML = renderAddCreditForm();
+  if(id === 'tab-budce') loadGlobalBudget();
+  if(id === 'tab-muracietler') renderBusinessApplications();
+}
+
+function submitAdminApplication(){
+  const msg = document.getElementById('adminMsg');
+  const fin = document.getElementById('adminFin').value.trim();
+  const amount = parseFloat(document.getElementById('adminMebleg').value);
+  const term = parseInt(document.getElementById('adminMuddet').value, 10);
+  const monthlyPayment = parseFloat(document.getElementById('adminAyliqOdenis').value);
+
+  if(!fin || !Number.isFinite(amount) || amount <= 0 || !Number.isInteger(term) || term <= 0 || !Number.isFinite(monthlyPayment) || monthlyPayment < 0){
+    if(msg) msg.innerHTML = '<div class="msg err">Şəxsi kod, məbləğ, müddət və aylıq ödəniş məlumatlarını düzgün daxil edin.</div>';
+    return;
+  }
+
+  const storageKey = 'moneza_business_credit_admin_records_v1';
+  let records = {};
+  try{
+    records = JSON.parse(localStorage.getItem(storageKey) || '{}') || {};
+  }catch(e){
+    records = {};
+  }
+  records[fin] = {
+    fin: fin,
+    amount: amount,
+    term: term,
+    monthlyPayment: monthlyPayment,
+    FIN: fin,
+    'Məbləğ': amount,
+    'Müddət': term,
+    'Aylıq ödəniş': monthlyPayment,
+    savedAt: new Date().toISOString()
+  };
+  localStorage.setItem(storageKey, JSON.stringify(records));
+
+  if(msg){
+    msg.innerHTML = '<div class="msg ok admin-sent">Göndərildi</div>';
+  }
+}
+
+/* ============================================================
+   FAMILY MEMBER ROWS (dynamic "+" fieldset)
+   ============================================================ */
+function addFamilyMemberRow(data){
+  familyMemberCounter++;
+  const id = familyMemberCounter;
+  const container = document.getElementById('familyMembersContainer');
+  const row = document.createElement('div');
+  row.className = 'family-member-row';
+  row.dataset.fmId = id;
+  row.innerHTML =
+    '<div class="fm-title">Ailə üzvü</div>' +
+    '<div class="row2">' +
+      '<div><label>Ad</label><input type="text" class="fm-ad"></div>' +
+      '<div><label>Soyad</label><input type="text" class="fm-soyad"></div>' +
+    '</div>' +
+    '<div class="row2">' +
+      '<div><label>Qohumluq</label><input type="text" class="fm-qohumluq" placeholder="Məs: Həyat yoldaşı"></div>' +
+      '<div><label>Rəsmi aylıq gəlir (AZN)</label><input type="number" class="fm-gelir" min="0" value="0"></div>' +
+    '</div>' +
+    '<button type="button" class="btn small danger" style="margin-top:10px;" onclick="removeFamilyMemberRow(this)">Sil</button>';
+  container.appendChild(row);
+
+  if(data){
+    row.querySelector('.fm-ad').value = data.ad || '';
+    row.querySelector('.fm-soyad').value = data.soyad || '';
+    row.querySelector('.fm-qohumluq').value = data.qohumluq || '';
+    row.querySelector('.fm-gelir').value = data.gelir || 0;
+  }
+  renumberFamilyMembers();
+}
+
+function removeFamilyMemberRow(btn){
+  const row = btn.closest('.family-member-row');
+  row.remove();
+  renumberFamilyMembers();
+}
+
+function renumberFamilyMembers(){
+  const rows = document.querySelectorAll('#familyMembersContainer .family-member-row');
+  rows.forEach((r, idx) => {
+    r.querySelector('.fm-title').textContent = 'Ailə üzvü ' + (idx + 1);
+  });
+}
+
+function clearFamilyMemberRows(){
+  document.getElementById('familyMembersContainer').innerHTML = '';
+}
+
+function collectFamilyMembers(){
+  const rows = document.querySelectorAll('#familyMembersContainer .family-member-row');
+  const arr = [];
+  rows.forEach(r=>{
+    arr.push({
+      ad: r.querySelector('.fm-ad').value.trim(),
+      soyad: r.querySelector('.fm-soyad').value.trim(),
+      qohumluq: r.querySelector('.fm-qohumluq').value.trim(),
+      gelir: parseFloat(r.querySelector('.fm-gelir').value) || 0
+    });
+  });
+  return arr;
+}
+
+/* ============================================================
+   CUSTOMER STORAGE FUNCTIONS
+   ============================================================ */
+function getAllCustomers(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){
+    return {};
+  }
+}
+
+function saveAllCustomers(data){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function findCustomerByFin(fin){
+  if(!fin) return null;
+  const all = getAllCustomers();
+  const key = fin.trim().toUpperCase();
+  return all[key] || null;
+}
+
+function deleteCustomer(fin){
+  const all = getAllCustomers();
+  delete all[fin];
+  saveAllCustomers(all);
+  renderCustomerList();
+}
+
+/* ============================================================
+   FORM <-> CUSTOMER OBJECT
+   ============================================================ */
+function readFormToCustomer(){
+  const val = id => document.getElementById(id).value;
+  const num = id => parseFloat(document.getElementById(id).value) || 0;
+
+  const obj = {
+    fin: val('f_fin').trim().toUpperCase(),
+    ad: val('f_ad').trim(),
+    soyad: val('f_soyad').trim(),
+    ataAdi: val('f_ataAdi').trim(),
+    telefon: val('f_telefon').trim(),
+    unvan: val('f_unvan').trim(),
+    qohum1: val('f_qohum1').trim(),
+    qohum2: val('f_qohum2').trim(),
+    cins: val('f_cins'),
+    yas: num('f_yas'),
+    aileVeziyyeti: val('f_aileVeziyyeti'),
+    aileSayi: num('f_aileSayi') || 1,
+    himayeSayi: num('f_himayeSayi'),
+
+    familyMembers: collectFamilyMembers(),
+
+    resmiGelir: num('f_resmiGelir'),
+    digerGelir: num('f_digerGelir'),
+    gelirSabitliyi: parseFloat(val('f_gelirSabitliyi')),
+    isSahesi: val('f_isSahesi').trim(),
+    isTecrubesi: num('f_isTecrubesi'),
+
+    teqaudVarmi: val('f_teqaudVarmi'),
+    teqaudMeblegi: num('f_teqaudMeblegi'),
+    pensiyaAlanVarmi: val('f_pensiyaAlanVarmi'),
+    pensiyaMeblegi: num('f_pensiyaMeblegi'),
+
+    yasayisXerci: num('f_yasayisXerci'),
+    kiraye: num('f_kiraye'),
+    kommunal: num('f_kommunal'),
+    neqliyyat: num('f_neqliyyat'),
+    tehsil: num('f_tehsil'),
+    digerXerc: num('f_digerXerc'),
+
+    digerBorc: num('f_digerBorc'),
+
+    biznesVarmi: val('f_biznesVarmi'),
+    biznesKateqoriya: val('f_biznesKateqoriya'),
+    biznesAltFealiyyet: val('f_biznesAltFealiyyet'),
+    biznesMuddeti: num('f_biznesMuddeti'),
+    biznesDovriyyesi: num('f_biznesDovriyyesi'),
+    biznesXercleri: num('f_biznesXercleri'),
+    biznesPay: num('f_biznesPay') || 100,
+    movsumiBiznes: val('f_movsumiBiznes'),
+
+    evVarmi: val('f_evVarmi'),
+    avtoVarmi: val('f_avtoVarmi'),
+    avtoKreditde: val('f_avtoKreditde'),
+    emlakMelumati: val('f_emlakMelumati').trim(),
+
+    kartDovriyyesi: num('f_kartDovriyyesi'),
+    tehsilSeviyyesi: val('f_tehsilSeviyyesi'),
+
+    cerimeVarmi: val('f_cerimeVarmi'),
+    cerimeMeblegi: num('f_cerimeMeblegi'),
+
+    saglamlik: val('f_saglamlik'),
+
+    baglanmisKreditSayi: num('f_baglanmisKreditSayi'),
+    gecikmeSayi: num('f_gecikmeSayi'),
+    baglanmisKreditMeblegh: num('f_baglanmisKreditMeblegh'),
+    baglanmisGecikmeSayi: num('f_baglanmisGecikmeSayi'),
+    sonBaglanmaTarixi: val('f_sonBaglanmaTarixi').trim(),
+    maxGecikmeGunu: num('f_maxGecikmeGunu'),
+    hazirdaGecikmish: val('f_hazirdaGecikmish'),
+    over30: val('f_over30'),
+    over60: val('f_over60'),
+    over90: val('f_over90'),
+    sonKreditVeziyyeti: val('f_sonKreditVeziyyeti').trim(),
+
+    riskQeydi: val('f_riskQeydi').trim(),
+
+    aktivKreditler: (function(){ return collectLoanBlocks('activeLoansContainer'); })(),
+    zaminKreditler: (function(){ return collectLoanBlocks('guarantorLoansContainer'); })(),
+
+    loanHistory: [], // reserved structure for future 90-day tracking:
+                      // {verilmeTarixi, meblegh, odenishTarixi, gecikmeGunu, baglanmaVeziyyeti}
+    qeydiyyatTarixi: new Date().toISOString()
+  };
+
+  obj.hesablanmisAktivKreditMeblegi = obj.aktivKreditler.reduce((s,l)=>s+(l.meblegh||0),0);
+  obj.hesablanmisAktivKreditOdenisi = obj.aktivKreditler.reduce((s,l)=>s+(l.aylıqOdenis||0),0);
+  obj.hesablanmisZaminMeblegi = obj.zaminKreditler.reduce((s,l)=>s+(l.meblegh||0),0);
+  obj.hesablanmisZaminOdenisi = obj.zaminKreditler.reduce((s,l)=>s+(l.aylıqOdenis||0),0);
+  return obj;
+}
+
+function fillFormFromCustomer(c){
+  const set = (id,v) => { document.getElementById(id).value = v; };
+  set('f_fin', c.fin);
+  set('f_ad', c.ad);
+  set('f_soyad', c.soyad);
+  set('f_ataAdi', c.ataAdi);
+  set('f_telefon', c.telefon || '');
+  set('f_unvan', c.unvan || '');
+  set('f_qohum1', c.qohum1 || '');
+  set('f_qohum2', c.qohum2 || '');
+  set('f_cins', c.cins || 'kisi');
+  set('f_yas', c.yas);
+  set('f_aileVeziyyeti', c.aileVeziyyeti || 'subay');
+  set('f_aileSayi', c.aileSayi);
+  set('f_himayeSayi', c.himayeSayi);
+
+  clearFamilyMemberRows();
+  (c.familyMembers||[]).forEach(m => addFamilyMemberRow(m));
+
+  set('f_resmiGelir', c.resmiGelir);
+  set('f_digerGelir', c.digerGelir);
+  set('f_gelirSabitliyi', c.gelirSabitliyi);
+  set('f_isSahesi', c.isSahesi);
+  set('f_isTecrubesi', c.isTecrubesi);
+
+  set('f_teqaudVarmi', c.teqaudVarmi || 'xeyr');
+  set('f_teqaudMeblegi', c.teqaudMeblegi || 0);
+  set('f_pensiyaAlanVarmi', c.pensiyaAlanVarmi || 'xeyr');
+  set('f_pensiyaMeblegi', c.pensiyaMeblegi || 0);
+
+  set('f_yasayisXerci', c.yasayisXerci);
+  set('f_kiraye', c.kiraye);
+  set('f_kommunal', c.kommunal);
+  set('f_neqliyyat', c.neqliyyat);
+  set('f_tehsil', c.tehsil);
+  set('f_digerXerc', c.digerXerc);
+  set('f_digerBorc', c.digerBorc);
+  set('f_biznesVarmi', c.biznesVarmi);
+  set('f_biznesKateqoriya', c.biznesKateqoriya || '');
+  onBusinessCategoryChange();
+  set('f_biznesAltFealiyyet', c.biznesAltFealiyyet || '');
+  set('f_biznesMuddeti', c.biznesMuddeti);
+  set('f_biznesDovriyyesi', c.biznesDovriyyesi);
+  set('f_biznesXercleri', c.biznesXercleri);
+  set('f_biznesPay', c.biznesPay || 100);
+  set('f_movsumiBiznes', c.movsumiBiznes);
+  set('f_evVarmi', c.evVarmi);
+  set('f_avtoVarmi', c.avtoVarmi);
+  set('f_avtoKreditde', c.avtoKreditde);
+  set('f_emlakMelumati', c.emlakMelumati);
+  set('f_kartDovriyyesi', c.kartDovriyyesi || 0);
+  set('f_tehsilSeviyyesi', c.tehsilSeviyyesi || 'yoxdur');
+  set('f_cerimeVarmi', c.cerimeVarmi || 'yoxdur');
+  set('f_cerimeMeblegi', c.cerimeMeblegi || 0);
+  set('f_saglamlik', c.saglamlik || '');
+  set('f_aktivKreditSayi', (c.aktivKreditler||[]).length);
+  buildLoanBlocks('activeLoansContainer', (c.aktivKreditler||[]).length, c.aktivKreditler||[]);
+  set('f_zaminKreditSayi', (c.zaminKreditler||[]).length);
+  buildLoanBlocks('guarantorLoansContainer', (c.zaminKreditler||[]).length, c.zaminKreditler||[]);
+  set('f_baglanmisKreditSayi', c.baglanmisKreditSayi);
+  set('f_gecikmeSayi', c.gecikmeSayi);
+  set('f_baglanmisKreditMeblegh', c.baglanmisKreditMeblegh || 0);
+  set('f_baglanmisGecikmeSayi', c.baglanmisGecikmeSayi || 0);
+  set('f_sonBaglanmaTarixi', c.sonBaglanmaTarixi || '');
+  set('f_maxGecikmeGunu', c.maxGecikmeGunu);
+  set('f_hazirdaGecikmish', c.hazirdaGecikmish);
+  set('f_over30', c.over30);
+  set('f_over60', c.over60);
+  set('f_over90', c.over90);
+  set('f_sonKreditVeziyyeti', c.sonKreditVeziyyeti);
+  set('f_riskQeydi', c.riskQeydi);
+}
+
+function clearForm(){
+  document.getElementById('customerForm').reset();
+  clearFamilyMemberRows();
+  document.getElementById('activeLoansContainer').innerHTML = '';
+  document.getElementById('guarantorLoansContainer').innerHTML = '';
+  document.getElementById('f_biznesAltFealiyyet').innerHTML = '<option value="">Əvvəlcə kateqoriya seçin</option>';
+  document.getElementById('f_biznesAltFealiyyet').disabled = true;
+  document.getElementById('f_fin').disabled = false;
+  editingFin = null;
+  document.getElementById('saveBtn').textContent = 'QEYDƏ AL';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+}
+
+function cancelEdit(){
+  clearForm();
+  document.getElementById('formMsg').innerHTML = '';
+}
+
+/* ============================================================
+   SAVE CUSTOMER (with duplicate FIN handling)
+   ============================================================ */
+function saveCustomerFromForm(){
+  const msgArea = document.getElementById('formMsg');
+  const c = readFormToCustomer();
+
+  if(!c.fin){
+    msgArea.innerHTML = '<div class="msg err">Şəxsi kod mütləqdir.</div>';
+    return;
+  }
+  if(!c.ad || !c.soyad){
+    msgArea.innerHTML = '<div class="msg err">Ad və Soyad mütləqdir.</div>';
+    return;
+  }
+  if(c.telefon && !isValidAzPhone(c.telefon)){
+    msgArea.innerHTML = '<div class="msg err">Telefon nömrəsi düzgün formatda deyil (050/051/055/070/099/010/077 ilə başlamalıdır).</div>';
+    return;
+  }
+  if(c.qohum1 && !isValidAzPhone(c.qohum1)){
+    msgArea.innerHTML = '<div class="msg err">1-ci qohum nömrəsi düzgün formatda deyil.</div>';
+    return;
+  }
+  if(c.qohum2 && !isValidAzPhone(c.qohum2)){
+    msgArea.innerHTML = '<div class="msg err">2-ci qohum nömrəsi düzgün formatda deyil.</div>';
+    return;
+  }
+
+  const all = getAllCustomers();
+  const exists = !!all[c.fin];
+
+  if(exists && editingFin !== c.fin){
+    msgArea.innerHTML = '<div class="msg err">Bu şəxsi kod artıq sistemdə mövcuddur. ' +
+      '<button class="btn small secondary" onclick="loadForEdit(\'' + c.fin + '\')">Məlumatı yenilə</button></div>';
+    return;
+  }
+
+  // preserve loan history if updating
+  if(exists){ c.loanHistory = all[c.fin].loanHistory || []; }
+
+  all[c.fin] = c;
+  saveAllCustomers(all);
+  logAudit(exists ? 'Məlumat dəyişdirildi' : 'Müştəri yaradıldı', {fin: c.fin});
+
+  msgArea.innerHTML = '<div class="msg ok">✓ Müştəri qeydə alındı</div>';
+  clearForm();
+  renderCustomerList();
+}
+
+function loadForEdit(fin){
+  const c = findCustomerByFin(fin);
+  if(!c) return;
+  fillFormFromCustomer(c);
+  document.getElementById('f_fin').disabled = true;
+  editingFin = c.fin;
+  document.getElementById('saveBtn').textContent = 'YENİLƏ';
+  document.getElementById('cancelEditBtn').style.display = 'inline-block';
+  document.getElementById('formMsg').innerHTML = '<div class="msg info">Redaktə rejimi: ' + fin + '</div>';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============================================================
+   RENDER CUSTOMER LIST
+   ============================================================ */
+function renderCustomerList(){
+  const area = document.getElementById('customerListArea');
+  const all = getAllCustomers();
+  const keys = Object.keys(all);
+
+  if(keys.length === 0){
+    area.innerHTML = '<div class="empty-state">Hələ heç bir müştəri qeydə alınmayıb.</div>';
+    return;
+  }
+
+  let html = '';
+  keys.sort((a,b) => (all[b].qeydiyyatTarixi||'').localeCompare(all[a].qeydiyyatTarixi||''));
+  keys.forEach(fin => {
+    const c = all[fin];
+    html += '<div class="customer-item">' +
+      '<div class="top-row">' +
+        '<div><div class="name">' + escapeHtml(c.ad + ' ' + c.soyad) + '</div>' +
+        '<div class="fin">Şəxsi kod: ' + escapeHtml(c.fin) + '</div></div>' +
+      '</div>' +
+      '<div class="actions">' +
+        '<button class="btn small secondary" onclick="viewCustomer(\'' + fin + '\')">Bax</button>' +
+        '<button class="btn small secondary" onclick="loadForEdit(\'' + fin + '\')">Redaktə et</button>' +
+        '<button class="btn small danger" onclick="confirmDelete(\'' + fin + '\')">Sil</button>' +
+      '</div>' +
+      '<div id="view-' + fin + '"></div>' +
+    '</div>';
+  });
+  area.innerHTML = html;
+}
+
+function confirmDelete(fin){
+  if(confirm('Bu müştərini silmək istədiyinizə əminsiniz? (' + fin + ')')){
+    deleteCustomer(fin);
+  }
+}
+
+function viewCustomer(fin){
+  const area = document.getElementById('view-' + fin);
+  if(area.innerHTML !== ''){ area.innerHTML = ''; return; }
+  const c = findCustomerByFin(fin);
+  if(!c) return;
+  const familyCount = (c.familyMembers||[]).length;
+  area.innerHTML =
+    '<div class="customer-info-grid">' +
+      infoItem('Ata adı', c.ataAdi) +
+      infoItem('Cins', c.cins === 'qadin' ? 'Qadın' : 'Kişi') +
+      infoItem('Yaş', c.yas) +
+      infoItem('Ailə vəziyyəti', c.aileVeziyyeti) +
+      infoItem('Ailə üzvü', c.aileSayi) +
+      infoItem('Himayədə', c.himayeSayi) +
+      infoItem('Qeydə alınmış ailə üzvü sayı', familyCount) +
+      infoItem('Rəsmi gəlir', c.resmiGelir + ' AZN') +
+      infoItem('Biznes kateqoriyası', BUSINESS_CATEGORIES[c.biznesKateqoriya] ? BUSINESS_CATEGORIES[c.biznesKateqoriya].label : '—') +
+      infoItem('Alt fəaliyyət', c.biznesAltFealiyyet || '—') +
+      infoItem('Biznes dövriyyəsi', c.biznesDovriyyesi + ' AZN') +
+      infoItem('Biznes payı', (c.biznesPay||100) + '%') +
+      infoItem('Yaşayış xərci', c.yasayisXerci + ' AZN') +
+      infoItem('Aktiv kredit sayı', (c.aktivKreditler||[]).length) +
+      infoItem('Aktiv kreditlərin ümumi məbləği', (c.hesablanmisAktivKreditMeblegi||0) + ' AZN') +
+      infoItem('Aktiv kreditlərin aylıq ödənişi', (c.hesablanmisAktivKreditOdenisi||0) + ' AZN') +
+      infoItem('Zamin olduğu kredit sayı', (c.zaminKreditler||[]).length) +
+      infoItem('Zaminlik üzrə aylıq ödəniş', (c.hesablanmisZaminOdenisi||0) + ' AZN') +
+      infoItem('Gecikmə sayı (12 ay)', c.gecikmeSayi) +
+      infoItem('Maks. gecikmə günü (tarixi)', c.maxGecikmeGunu) +
+      infoItem('Cərimə', c.cerimeVarmi === 'var' ? ('Var (' + c.cerimeMeblegi + ' AZN)') : 'Yoxdur') +
+    '</div>';
+}
+
+function infoItem(k,v){
+  return '<div class="item"><span class="k">' + escapeHtml(String(k)) + '</span><span class="v">' + escapeHtml(String(v)) + '</span></div>';
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* ============================================================
+   SCORING ENGINE (runs silently in the background — never shown to the user)
+   ============================================================ */
+
+// Minimum logical living expense based on family size / dependents
+function minLivingExpense(aileSayi, himayeSayi){
+  const base = 250; // baza yaşayış xərci (tək şəxs üçün)
+  const perExtraMember = 90;
+  const perDependent = 60;
+  const members = Math.max(1, aileSayi || 1) - 1;
+  const dependents = himayeSayi || 0;
+  return base + (members * perExtraMember) + (dependents * perDependent);
+}
+
+// Residual (free) monthly financial capacity — combines all connected income and expense sources once each
+function calculateResidualIncome(c){
+  const familyIncomeSum = (c.familyMembers||[]).reduce((s,m)=>s+(m.gelir||0),0);
+
+  // Business: dövriyyə -> xərclər -> xalis qazanc -> sahiblik payı ardıcıllığı
+  const businessNetRaw = (c.biznesVarmi === 'beli')
+    ? Math.max(0, (c.biznesDovriyyesi||0) - (c.biznesXercleri||0))
+    : 0;
+  const ownershipShare = (c.biznesVarmi === 'beli')
+    ? Math.min(100, Math.max(0, c.biznesPay != null ? c.biznesPay : 100)) / 100
+    : 0;
+  const sector = SECTOR_PROFILE[c.biznesKateqoriya] || {income:1};
+  const businessIncomeAdjusted = Math.round(businessNetRaw * ownershipShare * (sector.income || 1));
+
+  const pensionIncome = (c.teqaudVarmi === 'beli') ? (c.teqaudMeblegi||0) : 0;
+  const familyPensionIncome = (c.pensiyaAlanVarmi === 'beli') ? (c.pensiyaMeblegi||0) : 0;
+
+  const totalIncome = (c.resmiGelir||0) + (c.digerGelir||0) + businessIncomeAdjusted +
+                       pensionIncome + familyPensionIncome + familyIncomeSum;
+
+  const statedLiving = (c.yasayisXerci||0) + (c.kiraye||0) + (c.kommunal||0) +
+                        (c.neqliyyat||0) + (c.tehsil||0) + (c.digerXerc||0);
+  const minExpense = minLivingExpense(c.aileSayi, c.himayeSayi);
+  const effectiveLiving = Math.max(statedLiving, minExpense);
+
+  const activeLoanPayments = c.hesablanmisAktivKreditOdenisi || 0;
+  const existingPayments = activeLoanPayments + (c.digerBorc||0);
+
+  // Zaminlik öhdəlikləri potensial maliyyə yükü kimi qismən (50%) nəzərə alınır
+  const guarantorBurden = (c.hesablanmisZaminOdenisi || 0) * 0.5;
+
+  const residual = totalIncome - effectiveLiving - existingPayments - guarantorBurden;
+  return {
+    totalIncome, effectiveLiving, existingPayments, businessIncomeAdjusted, guarantorBurden,
+    residual: Math.round(residual)
+  };
+}
+
+// Delinquency scoring: returns points between -25 and +20
+function delinquencyScore(c){
+  const days = c.maxGecikmeGunu || 0;
+  if(days === 0) return 20;
+  if(days <= 3) return 17;
+  if(days <= 7) return 14;
+  if(days <= 15) return 8;
+  if(days <= 30) return 2;
+  if(days <= 60) return -8;
+  if(days <= 90) return -15;
+  return -25;
+}
+
+// Full risk score 0-100 (internal use only)
+function calculateRiskScore(c, resInfo){
+  let score = 0;
+
+  // Kredit tarixçəsi (0-25) — bağlanmış kreditlərin sayı, keyfiyyəti və ümumi məbləği birlikdə
+  let historyScore = 12;
+  const closedCount = c.baglanmisKreditSayi || 0;
+  const closedWithDelinquency = c.baglanmisGecikmeSayi || 0;
+  const closedClean = Math.max(0, closedCount - closedWithDelinquency);
+  if(closedCount === 0 && (c.aktivKreditler||[]).length === 0) historyScore = 15; // yeni müştəri — neytral baza
+  else if((c.gecikmeSayi||0) > 3 || closedWithDelinquency > closedClean) historyScore = 5;
+  else if(closedClean > 0 && closedWithDelinquency === 0) historyScore = 25;
+  else historyScore = 18;
+  score += historyScore;
+
+  // Bağlanmış kreditlərin ümumi məbləği — müsbət ödəmə təcrübəsinin əlavə göstəricisi (gəlir kimi qəbul edilmir, tavanlı bonus)
+  let closedAmountBonus = 0;
+  const closedAmt = c.baglanmisKreditMeblegh || 0;
+  if(closedClean > 0){
+    if(closedAmt >= 3000) closedAmountBonus = 4;
+    else if(closedAmt >= 1000) closedAmountBonus = 3;
+    else if(closedAmt >= 300) closedAmountBonus = 2;
+    else if(closedAmt > 0) closedAmountBonus = 1;
+  }
+  score += closedAmountBonus;
+
+  // Gecikmələr
+  score += delinquencyScore(c);
+
+  // Gecikmə tezliyi
+  if((c.gecikmeSayi||0) >= 4) score -= 6;
+  else if((c.gecikmeSayi||0) >= 2) score -= 3;
+
+  // Xalis sərbəst maliyyə imkanı (0-15)
+  let incomeScore = 0;
+  if(resInfo.residual >= 500) incomeScore = 15;
+  else if(resInfo.residual >= 350) incomeScore = 12;
+  else if(resInfo.residual >= 200) incomeScore = 9;
+  else if(resInfo.residual >= 100) incomeScore = 5;
+  else if(resInfo.residual > 0) incomeScore = 2;
+  else incomeScore = -5;
+  score += incomeScore;
+
+  // Mövcud kredit borcları (0-10) — daxil edilmiş aktiv kredit bloklarının sayına görə
+  let debtScore = 10;
+  const activeLoanCount = (c.aktivKreditler||[]).length;
+  if(activeLoanCount >= 3) debtScore = 2;
+  else if(activeLoanCount === 2) debtScore = 5;
+  else if(activeLoanCount === 1) debtScore = 7;
+  score += debtScore;
+
+  // Zaminlik öhdəlikləri — yüksək zaminlik yükü potensial risk kimi qiymətləndirilir
+  if((c.hesablanmisZaminOdenisi||0) > 0 && resInfo.totalIncome > 0){
+    const gRatio = c.hesablanmisZaminOdenisi / resInfo.totalIncome;
+    if(gRatio > 0.5) score -= 8;
+    else if(gRatio > 0.25) score -= 4;
+    else score -= 1;
+  }
+
+  // Ailə yükü (0-5)
+  const familyFactorTable = {1:5,2:4.5,3:4,4:3.5,5:3,6:2.5};
+  const fs = c.aileSayi||1;
+  score += (familyFactorTable[fs] !== undefined ? familyFactorTable[fs] : 2);
+
+  // Xərc/gəlir nisbəti (0-10)
+  let expenseRatioScore = 5;
+  if(resInfo.totalIncome > 0){
+    const ratio = resInfo.effectiveLiving / resInfo.totalIncome;
+    if(ratio <= 0.3) expenseRatioScore = 10;
+    else if(ratio <= 0.5) expenseRatioScore = 7;
+    else if(ratio <= 0.7) expenseRatioScore = 4;
+    else expenseRatioScore = 1;
+  }
+  score += expenseRatioScore;
+
+  // İş/gəlir sabitliyi (0-5)
+  const stability = c.gelirSabitliyi || 0.8;
+  score += stability * 5;
+
+  // Biznes sabitliyi/fəaliyyəti — fəaliyyət kateqoriyasının əmsalları ilə (0-5 baza)
+  if(c.biznesVarmi === 'beli'){
+    let businessScore = 3;
+    if((c.biznesMuddeti||0) >= 24) businessScore += 2;
+    else if((c.biznesMuddeti||0) >= 12) businessScore += 1;
+    if(c.movsumiBiznes === 'beli') businessScore -= 1;
+    const sector = SECTOR_PROFILE[c.biznesKateqoriya] || {stability:1, seasonality:0};
+    businessScore = businessScore * (sector.stability || 1) - (sector.seasonality || 0);
+    score += businessScore;
+  }
+
+  // Aktivlər (0-3, net of burden)
+  let assetScore = 0;
+  if(c.evVarmi === 'beli') assetScore += 2;
+  if(c.avtoVarmi === 'beli'){
+    assetScore += 1;
+    if(c.avtoKreditde === 'beli') assetScore -= 1;
+  }
+  score += assetScore;
+
+  // Kart dövriyyəsi — yalnız təsdiqləyici göstərici, gəlir kimi qəbul edilmir
+  if((c.kartDovriyyesi||0) > 0 && resInfo.totalIncome > 0){
+    const ratio = c.kartDovriyyesi / resInfo.totalIncome;
+    if(ratio >= 3) score += 5;
+    else if(ratio >= 1.5) score += 3;
+    else score += 1;
+  }
+
+  // Təhsil — çox cüzi təsir
+  if(c.tehsilSeviyyesi === 'ali') score += 1;
+  else if(c.tehsilSeviyyesi === 'yoxdur') score -= 1;
+
+  // Cərimələr
+  if(c.cerimeVarmi === 'var'){
+    score -= 6;
+    if((c.cerimeMeblegi||0) > 200) score -= 4;
+  }
+
+  // Digər risk faktorları
+  if(c.hazirdaGecikmish === 'beli') score -= 5;
+  if(c.over90 === 'beli') score -= 5;
+  else if(c.over60 === 'beli') score -= 3;
+  else if(c.over30 === 'beli') score -= 1;
+  if(c.riskQeydi && c.riskQeydi.length > 0) score -= 1;
+
+  // Qeyd: cins və sağlamlıq statusu bal hesablamasına təsir etmir — yalnız profil məlumatı kimi saxlanılır.
+
+  score = Math.max(0, Math.min(100, Math.round(score)));
+  return score;
+}
+
+// Map risk score (0-100) to a limit range, interpolated within band
+function riskScoreToLimit(score){
+  const bands = [
+    {min:0,  max:39, low:0,   high:0},
+    {min:40, max:54, low:50,  high:150},
+    {min:55, max:64, low:150, high:300},
+    {min:65, max:74, low:300, high:500},
+    {min:75, max:84, low:500, high:700},
+    {min:85, max:92, low:700, high:850},
+    {min:93, max:100,low:850, high:1000}
+  ];
+  const band = bands.find(b => score >= b.min && score <= b.max) || bands[0];
+  if(band.high === 0) return 0;
+  const span = band.max - band.min;
+  const pos = span > 0 ? (score - band.min) / span : 1;
+  return Math.round(band.low + (band.high - band.low) * pos);
+}
+
+// Map residual (free) financial capacity to an affordability limit, interpolated
+function affordabilityToLimit(residual){
+  if(residual <= 0) return 0;
+  const bands = [
+    {min:0,   max:100, low:50,  high:100},
+    {min:100, max:200, low:100, high:250},
+    {min:200, max:350, low:200, high:500},
+    {min:350, max:500, low:400, high:700},
+    {min:500, max:100000, low:600, high:1000}
+  ];
+  const band = bands.find(b => residual >= b.min && residual < b.max) || bands[bands.length-1];
+  const span = band.max - band.min;
+  const pos = span > 0 ? Math.min(1,(residual - band.min) / span) : 1;
+  return Math.round(band.low + (band.high - band.low) * pos);
+}
+
+/* ============================================================
+   YAŞ QAYDALARI (bir yerdə saxlanılır, kredit növünə görə tətbiq olunur)
+   ============================================================ */
+const AGE_RULES = {
+  general:   {min:20, max:75},
+  ani_avans: {min:20, max:78},
+  biznes:    {min:20, max:70}
+};
+const GUARANTOR_AGE_RULE = {min:20, max:75};
+
+/* ============================================================
+   KREDİT NÖVLƏRİ KONFİQURASİYASI
+   ============================================================ */
+const CREDIT_TYPES = {
+  ani_avans: {
+    key:'ani_avans', label:'Ani Avans Krediti',
+    min:5, max:20, softDelinquency:true, requiresIncome:true
+  },
+  istehlak: {
+    key:'istehlak', label:'İstehlak Krediti',
+    min:10, max:100
+  },
+  biznes: {
+    key:'biznes', label:'Biznes Krediti',
+    min:50, max:300,
+    termBands:[{max:149, term:1},{max:249, term:2},{max:Infinity, term:3}],
+    guarantorBurdenCheck:true
+  },
+  aqro: {
+    key:'aqro', label:'Aqro Krediti',
+    min:100, max:5000,
+    requiresSector:'aqro',
+    guarantorThreshold:1500,
+    termBandsList:[
+      {max:200, maxTerm:1}, {max:300, maxTerm:2}, {max:750, maxTerm:6},
+      {max:999, maxTerm:8}, {max:1500, maxTerm:12}, {max:2000, maxTerm:15},
+      {max:3000, maxTerm:18}, {max:5000, maxTerm:24}
+    ]
+  },
+  ortaBiznes: {
+    key:'ortaBiznes', label:'Orta Biznes Krediti',
+    min:50, max:1000,
+    termBands:[
+      {max:50, term:1}, {max:100, term:2}, {max:150, term:3},
+      {max:200, term:4}, {max:400, term:6}, {max:500, term:8},
+      {max:750, term:9}, {max:1000, term:12}
+    ]
+  },
+  ticaret: {
+    key:'ticaret', label:'Ticarət Krediti',
+    min:50, max:3000, maxTerm:18, delinquencyMaxDays:360, limitMultiplier:1.25
+  }
+};
+
+const TERM_OPTIONS_BY_MAX = {
+  1:[1], 2:[1,2], 3:[1,2,3], 5:[1,3,5], 6:[2,3,6], 8:[3,5,8],
+  12:[3,6,9,12], 15:[6,9,12,15], 18:[9,12,15,18], 24:[6,9,12,18,24]
+};
+
+function aqroMaxTermForAmount(amount){
+  const bands = CREDIT_TYPES.aqro.termBandsList;
+  for(let i = 0; i < bands.length; i++){
+    if(amount <= bands[i].max) return bands[i].maxTerm;
+  }
+  return 24;
+}
+
+function allowedTermsForType(typeKey, amount){
+  if(typeKey === 'ani_avans' || typeKey === 'istehlak') return [1];
+  if(typeKey === 'aqro'){
+    const mt = aqroMaxTermForAmount(amount);
+    const terms = [];
+    for(let i = 1; i <= mt; i++) terms.push(i);
+    return terms;
+  }
+  if(typeKey === 'biznes'){
+    const band = CREDIT_TYPES.biznes.termBands.find(b => amount <= b.max) || {term:3};
+    const arr = [];
+    for(let i = 1; i <= band.term; i++) arr.push(i);
+    return arr;
+  }
+  if(typeKey === 'ortaBiznes'){
+    const band = CREDIT_TYPES.ortaBiznes.termBands.find(b => amount <= b.max) || {term:12};
+    const arr = [];
+    for(let i = 1; i <= band.term; i++) arr.push(i);
+    return arr;
+  }
+  if(typeKey === 'ticaret'){
+    const arr = [];
+    for(let i = 1; i <= 18; i++) arr.push(i);
+    return arr;
+  }
+  return [1];
+}
+
+// Overall (historical + active-loan + guarantor-loan) maximum delinquency in days — counted once
+function overallMaxGecikme(c){
+  let m = c.maxGecikmeGunu || 0;
+  (c.aktivKreditler||[]).forEach(l => { if((l.maxGecikme||0) > m) m = l.maxGecikme; });
+  (c.zaminKreditler||[]).forEach(l => { if((l.maxGecikme||0) > m) m = l.maxGecikme; });
+  return m;
+}
+
+// Delinquency-based hard rejection, adapted per credit type. Strictest applicable rule wins.
+function hardRejectForType(typeKey, c, resInfo, overallMaxDays){
+  const cfg = CREDIT_TYPES[typeKey];
+
+  if(cfg.delinquencyMaxDays != null){
+    if(overallMaxDays > cfg.delinquencyMaxDays){
+      return 'Gecikmə həddi (' + cfg.delinquencyMaxDays + ' gün) aşılıb.';
+    }
+    return null;
+  }
+
+  const resmiGelir = c.resmiGelir || 0;
+  const businessNet = resInfo.businessIncomeAdjusted || 0;
+
+  let threshold = 180;
+  if(resmiGelir > 800) threshold = 360;
+  if(resmiGelir > 1500 && businessNet >= 1000) threshold = 960;
+  if(cfg.softDelinquency) threshold += 30; // Ani Avans Krediti üçün daha yumşaq yanaşma
+
+  if(overallMaxDays > threshold){
+    return 'Gecikmə həddi aşılıb.';
+  }
+  if(!cfg.softDelinquency && resmiGelir <= 800 && resInfo.residual <= 0 && overallMaxDays >= 90){
+    return 'Aşağı gəlir və zəif ödəmə qabiliyyəti ilə uzunmüddətli gecikmə mövcuddur.';
+  }
+  return null;
+}
+
+/* ============================================================
+   KREDİT NÖVÜNƏ GÖRƏ QİYMƏTLƏNDİRMƏ (əsas scoring mühərriki üzərində qurulub)
+   ============================================================ */
+function evaluateCreditType(customer, typeKey, ctx){
+  ctx = ctx || {};
+  const cfg = CREDIT_TYPES[typeKey];
+  if(!cfg) return {approved:false, reason:'Kredit növü tanınmadı.'};
+
+  // Yaş qaydaları
+  const yas = customer.yas || 0;
+  if(yas < AGE_RULES.general.min){
+    return {approved:false, reason:'Minimum yaş tələbinə uyğun deyil.'};
+  }
+  const ageRule = AGE_RULES[typeKey] || AGE_RULES.general;
+  const maxAgeForType = ageRule.max != null ? ageRule.max : AGE_RULES.general.max;
+  if(yas > maxAgeForType){
+    return {approved:false, reason:'Yaş bu kredit növü üçün maksimum həddi aşır.'};
+  }
+
+  // Sektor tələbi (Aqro Krediti)
+  if(cfg.requiresSector){
+    if(customer.biznesVarmi !== 'beli' || customer.biznesKateqoriya !== cfg.requiresSector){
+      return {approved:false, reason:'Bu kredit növü üçün müvafiq (Aqro) biznes fəaliyyəti tələb olunur.'};
+    }
+  }
+
+  let resInfo = calculateResidualIncome(customer);
+
+  // Ani Avans Krediti — hər hansı təsdiqlənmiş gəlir tələb olunur
+  if(cfg.requiresIncome){
+    const hasIncome = (customer.resmiGelir||0) > 0 || (customer.digerGelir||0) > 0 ||
+      (resInfo.businessIncomeAdjusted||0) > 0 ||
+      (customer.teqaudVarmi === 'beli' && (customer.teqaudMeblegi||0) > 0) ||
+      (customer.pensiyaAlanVarmi === 'beli' && (customer.pensiyaMeblegi||0) > 0);
+    if(!hasIncome){
+      return {approved:false, reason:'Təsdiqlənmiş gəlir mövcud deyil.'};
+    }
+  }
+
+  // İstehlak Krediti — biznes xalis qazancının yalnız 20%-i əlavə gəlir kimi sayılır
+  if(typeKey === 'istehlak' && resInfo.businessIncomeAdjusted > 0){
+    const reduceBy = resInfo.businessIncomeAdjusted * 0.8;
+    resInfo = Object.assign({}, resInfo, {
+      totalIncome: resInfo.totalIncome - reduceBy,
+      residual: Math.round(resInfo.residual - reduceBy)
+    });
+  }
+
+  // Zamin əlavəsi (limit artırma axını — əsasən Aqro Krediti üçün)
+  if(ctx.guarantor){
+    const guarantorIncomeBoost = (ctx.guarantor.gelir||0) * 0.5;
+    const guarantorBurdenAdd = (ctx.guarantor.zaminOdenisi||0);
+    resInfo = Object.assign({}, resInfo, {
+      residual: Math.round(resInfo.residual + guarantorIncomeBoost - guarantorBurdenAdd * 0.5)
+    });
+  }
+
+  const overallMaxDays = Math.max(overallMaxGecikme(customer), ctx.guarantor ? (ctx.guarantor.maxGecikme||0) : 0);
+
+  const hardReject = hardRejectForType(typeKey, customer, resInfo, overallMaxDays);
+  if(hardReject) return {approved:false, reason:hardReject};
+
+  // Biznes Krediti — həddindən artıq zaminlik öhdəliyi olduqda imtina
+  if(cfg.guarantorBurdenCheck && resInfo.totalIncome > 0){
+    const burdenRatio = (customer.hesablanmisZaminOdenisi||0) / resInfo.totalIncome;
+    if(burdenRatio > 0.5){
+      return {approved:false, reason:'Zaminlik öhdəliyi həddindən artıq yüksəkdir.'};
+    }
+  }
+
+  const riskScore = calculateRiskScore(customer, resInfo);
+  const minRiskScore = cfg.softDelinquency ? 30 : 40;
+  if(riskScore < minRiskScore){
+    return {approved:false, reason:'Risk balı çox aşağıdır.'};
+  }
+  if(resInfo.residual <= 0){
+    return {approved:false, reason:'Xalis sərbəst maliyyə imkanı mənfi və ya sıfırdır.'};
+  }
+  if(!cfg.softDelinquency && (customer.over90 === 'beli' || customer.hazirdaGecikmish === 'beli') && riskScore < 55){
+    return {approved:false, reason:'90+ gün gecikmə / davam edən problemli borc mövcuddur.'};
+  }
+
+  const riskLimit = riskScoreToLimit(riskScore);
+  const affordLimit = affordabilityToLimit(resInfo.residual);
+  let rawLimit = Math.min(riskLimit || 0, affordLimit || 0);
+
+  if(cfg.limitMultiplier) rawLimit = Math.round(rawLimit * cfg.limitMultiplier);
+
+  let cappedForGuarantor = false;
+  if(typeKey === 'aqro' && !ctx.guarantor && rawLimit > cfg.guarantorThreshold){
+    rawLimit = cfg.guarantorThreshold;
+    cappedForGuarantor = true;
+  }
+
+  let finalLimit = Math.round(Math.max(0, Math.min(cfg.max, rawLimit)));
+
+  // Büdcə daxili limit hesablamasını dəyişmir; yalnız yekun nəticəyə son yuxarı hədd qoyur.
+  const systemBudget = getGlobalBudget();
+  const budgetCapped = Number.isFinite(systemBudget) && systemBudget > 0 && finalLimit > systemBudget;
+  if(budgetCapped){
+    finalLimit = Math.round(Math.min(finalLimit, systemBudget));
+  }
+
+  if(finalLimit < cfg.min){
+    return {approved:false, reason:'Hesablanan limit bu kredit növü üçün minimum həddən aşağıdır.'};
+  }
+
+  const allowedTerms = allowedTermsForType(typeKey, finalLimit);
+  const canIncrease = !budgetCapped &&
+    ((typeKey === 'aqro' && !ctx.guarantor && finalLimit < cfg.max) || cappedForGuarantor);
+
+  return {approved:true, finalLimit, allowedTerms, canIncrease, typeKey};
+}
+
+/* ============================================================
+   RESULT DISPLAY — approved amount or rejection only, no scoring details
+   ============================================================ */
+function amountStepFor(typeKey){
+  if(typeKey === 'ani_avans') return 1;
+  if(typeKey === 'istehlak') return 5;
+  return 10;
+}
+
+function buildAmountOptions(finalLimit, cfg, typeKey){
+  const step = 10;
+  const opts = [];
+  for(let a = cfg.min; a < finalLimit; a += step){ opts.push(a); }
+  if(opts.length === 0 || opts[opts.length-1] !== finalLimit) opts.push(finalLimit);
+  return opts;
+}
+
+function renderFinalResultOnly(container, result, ctx){
+  if(!result.approved){
+    container.innerHTML = '<div class="card"><div class="reject-box">' +
+      escapeHtml('Təəssüf ki, hazırda kredit üçün uyğun deyilsiniz.') +
+    '</div></div>';
+    logAudit('Kredit imtina edildi', {fin: ctx.fin, kreditNovu: ctx.typeKey});
+    return;
+  }
+
+  const cfg = CREDIT_TYPES[result.typeKey];
+  const amountOptions = buildAmountOptions(result.finalLimit, cfg, result.typeKey);
+  const defaultAmount = result.finalLimit;
+  const terms = allowedTermsForType(result.typeKey, defaultAmount);
+  const defaultTerm = terms[0];
+
+  let html = '<div class="card"><div class="result-box">' +
+    '<div class="label">KREDİT LİMİTİNİZ</div>' +
+    '<div class="amount" id="resultAmount">' + result.finalLimit + ' <span>AZN</span></div>';
+  if(result.canIncrease){
+    html += '<button class="btn secondary small" style="margin-top:10px;" onclick="openGuarantorAdd()">Məbləği artır</button>';
+  }
+  html += '</div>';
+
+  html += '<label style="margin-top:16px;">Kredit məbləği</label>' +
+    '<div class="amount-select-wrap" id="amountChipWrap">' +
+    amountOptions.map(a => '<div class="amount-chip' + (a===defaultAmount?' sel':'') + '" data-amt="' + a + '" onclick="selectAmountChip(this)">' + a + ' ₼</div>').join('') +
+    '</div>';
+
+  html += '<label style="margin-top:16px;">Müddət</label>' +
+    '<select id="termSelect" onchange="updateMonthlyPaymentDisplay()">' +
+    terms.map(t => '<option value="' + t + '">' + t + ' ay</option>').join('') +
+    '</select>';
+
+  html += '<div class="msg ok" id="monthlyPaymentMsg" style="margin-top:10px;">Aylıq ödəniş: ' +
+    Math.round(defaultAmount / defaultTerm) + ' AZN</div>';
+  html += '<div id="guarantorAddArea"></div>';
+  html += '<button class="btn" style="margin-top:16px;" onclick="startFormalization()">Davam et</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  window.__currentResult = result;
+  window.__currentCustomerFin = ctx.fin;
+  window.__currentTypeKey = ctx.typeKey;
+  window.__selectedAmount = defaultAmount;
+  logAudit('Limit hesablandı', {fin: ctx.fin, kreditNovu: result.typeKey, meblegh: result.finalLimit});
+}
+
+function selectAmountChip(el){
+  document.querySelectorAll('#amountChipWrap .amount-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  window.__selectedAmount = parseFloat(el.dataset.amt);
+  logAudit('Məbləğ seçildi', {fin: window.__currentCustomerFin, kreditNovu: window.__currentTypeKey, meblegh: window.__selectedAmount});
+  const terms = allowedTermsForType(window.__currentResult.typeKey, window.__selectedAmount);
+  const sel = document.getElementById('termSelect');
+  sel.innerHTML = terms.map(t => '<option value="' + t + '">' + t + ' ay</option>').join('');
+  updateMonthlyPaymentDisplay();
+}
+
+function updateMonthlyPaymentDisplay(){
+  const sel = document.getElementById('termSelect');
+  const term = parseInt(sel.value, 10) || 1;
+  const amount = window.__selectedAmount || window.__currentResult.finalLimit;
+  const monthly = Math.round(amount / term);
+  document.getElementById('monthlyPaymentMsg').textContent = 'Aylıq ödəniş: ' + monthly + ' AZN';
+}
+
+/* ============================================================
+   ZAMİN ƏLAVƏ ET (limit artırma axını)
+   ============================================================ */
+function openGuarantorAdd(){
+  const area = document.getElementById('guarantorAddArea');
+  area.innerHTML =
+    '<div class="divider"></div>' +
+    '<h3>Zamin əlavə et</h3>' +
+    '<div class="row2">' +
+      '<div><label>Ad</label><input type="text" id="g_ad"></div>' +
+      '<div><label>Soyad</label><input type="text" id="g_soyad"></div>' +
+    '</div>' +
+    '<label>Əlaqə telefonu</label><input type="text" id="g_telefon">' +
+    '<div class="row2">' +
+      '<div><label>Yaş</label><input type="number" id="g_yas" min="20" max="75"></div>' +
+      '<div><label>Rəsmi aylıq gəlir (AZN)</label><input type="number" id="g_gelir" min="0"></div>' +
+    '</div>' +
+    '<label>Maksimum gecikmə günü</label><input type="number" id="g_maxGecikme" min="0" value="0">' +
+    '<label>Zamin olduğu ümumi kredit məbləği (AZN)</label><input type="number" id="g_zaminMeblegh" min="0" value="0">' +
+    '<label>Zamin olduğu kreditlərin aylıq ödənişi (AZN)</label><input type="number" id="g_zaminOdenisi" min="0" value="0">' +
+    '<button class="btn" style="margin-top:12px;" onclick="continueWithGuarantor()">Zamin məlumatlarına əsasən davam et</button>' +
+    '<div id="guarantorMsg"></div>';
+}
+
+function continueWithGuarantor(){
+  const msg = document.getElementById('guarantorMsg');
+  const yas = parseFloat(document.getElementById('g_yas').value) || 0;
+  const gelir = parseFloat(document.getElementById('g_gelir').value) || 0;
+
+  if(yas < GUARANTOR_AGE_RULE.min || yas > GUARANTOR_AGE_RULE.max){
+    msg.innerHTML = '<div class="msg err">Zaminin yaşı ' + GUARANTOR_AGE_RULE.min + '-' + GUARANTOR_AGE_RULE.max + ' aralığında olmalıdır.</div>';
+    return;
+  }
+  if(!gelir || gelir <= 0){
+    msg.innerHTML = '<div class="msg err">Zaminin rəsmi aylıq gəliri mütləqdir.</div>';
+    return;
+  }
+
+  const guarantor = {
+    ad: document.getElementById('g_ad').value.trim(),
+    soyad: document.getElementById('g_soyad').value.trim(),
+    telefon: document.getElementById('g_telefon').value.trim(),
+    yas: yas,
+    gelir: gelir,
+    maxGecikme: parseFloat(document.getElementById('g_maxGecikme').value) || 0,
+    zaminMeblegh: parseFloat(document.getElementById('g_zaminMeblegh').value) || 0,
+    zaminOdenisi: parseFloat(document.getElementById('g_zaminOdenisi').value) || 0
+  };
+
+  const customer = findCustomerByFin(window.__currentCustomerFin);
+  if(!customer) return;
+  const scoringCustomer = mergeRealCreditsIntoCustomer(customer, getActiveCreditsForFin(customer.fin));
+  const result = evaluateCreditType(scoringCustomer, window.__currentTypeKey, {
+    guarantor: guarantor
+  });
+  window.__currentGuarantorForApp = guarantor;
+  logAudit('Zamin əlavə edildi', {fin: window.__currentCustomerFin, kreditNovu: window.__currentTypeKey});
+  renderFinalResultOnly(document.getElementById('axtResultArea'), result, {
+    fin: window.__currentCustomerFin,
+    typeKey: window.__currentTypeKey
+  });
+}
+
+/* ============================================================
+   APPLICATION FLOW — FIN yoxlanışı, arxa plan hesablama, gözləmə ekranı, nəticə
+   ============================================================ */
+function handleMuraciet(){
+  const fin = document.getElementById('axtFin').value.trim().toUpperCase();
+  const typeKey = document.getElementById('axtKreditNovu').value;
+  const msgArea = document.getElementById('axtMsg');
+  const resultArea = document.getElementById('axtResultArea');
+  resultArea.innerHTML = '';
+
+  if(!fin){
+    msgArea.innerHTML = '<div class="msg err">Şəxsi kodu daxil edin.</div>';
+    return;
+  }
+  if(!typeKey){
+    msgArea.innerHTML = '<div class="msg err">Kredit növünü seçin.</div>';
+    return;
+  }
+
+  const customer = findCustomerByFin(fin);
+  if(!customer){
+    msgArea.innerHTML = '<div class="msg err">Bu şəxsi kod üzrə müştəri tapılmadı.</div>';
+    return;
+  }
+
+  window.__currentGuarantorForApp = null;
+  logAudit('Şəxsi kod ilə müraciət başladı', {fin: fin});
+  logAudit('Kredit növü seçildi', {fin: fin, kreditNovu: typeKey});
+
+  // Eyni FIN üzrə mövcud AKTİV kreditlərin sayı yoxlanılır (maksimum 2)
+  const activeRealCredits = getActiveCreditsForFin(fin);
+  if(activeRealCredits.length >= 2){
+    msgArea.innerHTML = '';
+    resultArea.innerHTML = '<div class="card"><div class="reject-box">Təəssüf ki, hazırda kredit üçün uyğun deyilsiniz.</div></div>';
+    logAudit('Kredit imtina edildi', {fin: fin, kreditNovu: typeKey});
+    return;
+  }
+
+  msgArea.innerHTML = '<div class="msg info">Kredit müraciətiniz qiymətləndirilir...</div>';
+
+  // Scoring arxa planda dərhal hesablanır, amma nəticə gözləmə ekranı bitənə qədər göstərilmir.
+  const scoringCustomer = mergeRealCreditsIntoCustomer(customer, activeRealCredits);
+  const result = evaluateCreditType(scoringCustomer, typeKey, {});
+
+  startWaitingScreen(function(){
+    msgArea.innerHTML = '';
+    renderFinalResultOnly(resultArea, result, {fin: fin, typeKey: typeKey});
+  });
+}
+
+/* ============================================================
+   WAITING SCREEN CONTROLLER (5 saniyə, gozlemehissesi.html dizaynı əsasında)
+   ============================================================ */
+let waitInterval = null;
+
+function startWaitingScreen(onComplete, opts){
+  opts = opts || {};
+  const TOTAL_SECONDS = opts.seconds || 5;
+  const radius = 88;
+  const circumference = 2 * Math.PI * radius;
+
+  const overlay = document.getElementById('waitOverlay');
+  const ringEl = document.getElementById('ringProgress');
+  const timerEl = document.getElementById('timerDisplay');
+  const timerSrEl = document.getElementById('timerSrText');
+  const hourglassEl = document.getElementById('hourglassIcon');
+  const titleEl = document.getElementById('waitTitleText');
+  const subtitleEl = document.getElementById('waitSubtitleText');
+
+  titleEl.textContent = opts.title || 'Zəhmət olmasa, gözləyin';
+  subtitleEl.textContent = opts.subtitle || 'Məlumatlarınızı nəzərdən keçiririk.';
+
+  overlay.dataset.cancelled = '0';
+  hourglassEl.classList.add('spinning');
+  hourglassEl.style.transform = '';
+
+  ringEl.style.strokeDasharray = circumference.toFixed(3);
+  ringEl.style.strokeDashoffset = '0';
+
+  let remaining = TOTAL_SECONDS;
+
+  function formatTime(totalSeconds){
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+  }
+
+  function render(totalSeconds){
+    timerEl.textContent = formatTime(totalSeconds);
+    timerSrEl.textContent = totalSeconds + ' saniyə qaldı';
+    const progressFraction = totalSeconds / TOTAL_SECONDS;
+    const offset = circumference * (1 - progressFraction);
+    ringEl.style.strokeDashoffset = offset.toFixed(3);
+    if(opts.onTick) opts.onTick(totalSeconds, titleEl, subtitleEl);
+  }
+
+  function stopHourglassSpin(){
+    const computedTransform = window.getComputedStyle(hourglassEl).transform;
+    hourglassEl.classList.remove('spinning');
+    if(computedTransform && computedTransform !== 'none'){
+      hourglassEl.style.transform = computedTransform;
+    }
+  }
+
+  overlay.style.display = 'flex';
+  render(remaining);
+
+  waitInterval = window.setInterval(function(){
+    remaining -= 1;
+    if(remaining <= 0){
+      remaining = 0;
+      render(remaining);
+      stopHourglassSpin();
+      window.clearInterval(waitInterval);
+      waitInterval = null;
+      overlay.style.display = 'none';
+      if(overlay.dataset.cancelled !== '1'){
+        onComplete();
+      }
+      return;
+    }
+    render(remaining);
+  }, 1000);
+}
+
+function cancelWaiting(){
+  const overlay = document.getElementById('waitOverlay');
+  overlay.dataset.cancelled = '1';
+  if(waitInterval !== null){
+    window.clearInterval(waitInterval);
+    waitInterval = null;
+  }
+  overlay.style.display = 'none';
+  const cancelMsgId = window.__waitingContext === 'credits' ? 'krMsg' : 'axtMsg';
+  document.getElementById(cancelMsgId).innerHTML = '<div class="msg info">Müraciət ləğv edildi.</div>';
+  window.__waitingContext = null;
+}
+
+/* ============================================================
+   STORAGE HELPERS — applications / credits / audit / signatures
+   ============================================================ */
+function getApplications(){
+  try{ return JSON.parse(localStorage.getItem(APPLICATIONS_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveApplications(all){ localStorage.setItem(APPLICATIONS_KEY, JSON.stringify(all)); }
+function getApplication(id){ return getApplications()[id] || null; }
+function saveApplication(app){
+  const all = getApplications();
+  all[app.applicationId] = app;
+  saveApplications(all);
+}
+function getCredits(){
+  try{ return JSON.parse(localStorage.getItem(CREDITS_KEY)) || []; }catch(e){ return []; }
+}
+function saveCredits(list){ localStorage.setItem(CREDITS_KEY, JSON.stringify(list)); }
+function getGlobalBudget(){
+  try{
+    const value = parseFloat(localStorage.getItem(SYSTEM_BUDGET_KEY));
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }catch(e){
+    return null;
+  }
+}
+function getAuditLogs(){
+  try{ return JSON.parse(localStorage.getItem(AUDIT_KEY)) || []; }catch(e){ return []; }
+}
+function getSignatures(){
+  try{ return JSON.parse(localStorage.getItem(SIGNATURES_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveSignature(key, dataUrl){
+  const all = getSignatures();
+  all[key] = dataUrl;
+  localStorage.setItem(SIGNATURES_KEY, JSON.stringify(all));
+}
+
+function logAudit(emeliyyat, info){
+  info = info || {};
+  const now = new Date();
+  const logs = getAuditLogs();
+  logs.push({
+    tarix: now.toLocaleDateString('az-AZ'),
+    saat: now.toLocaleTimeString('az-AZ'),
+    fin: info.fin || null,
+    applicationId: info.applicationId || null,
+    creditId: info.creditId || null,
+    documentNumber: info.documentNumber || null,
+    emeliyyat: emeliyyat,
+    kreditNovu: info.kreditNovu || null,
+    meblegh: info.meblegh != null ? info.meblegh : null,
+    muddet: info.muddet != null ? info.muddet : null,
+    status: info.status || null
+  });
+  localStorage.setItem(AUDIT_KEY, JSON.stringify(logs));
+}
+
+function generateApplicationId(){
+  return 'APP-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random()*9000+1000);
+}
+function generateCreditId(){
+  return 'CR-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random()*9000+1000);
+}
+function generateDocumentNumber(){
+  const credits = getCredits();
+  const apps = getApplications();
+  const used = new Set();
+  credits.forEach(c => { if(c.documentNumber) used.add(c.documentNumber); });
+  Object.values(apps).forEach(a => { if(a.documentNumber) used.add(a.documentNumber); });
+  let num;
+  do{
+    num = String(Math.floor(100000 + Math.random()*900000));
+  }while(used.has(num));
+  return num;
+}
+
+/* ============================================================
+   TARİX / ÖDƏNİŞ CƏDVƏLİ
+   ============================================================ */
+function formatDateAZ(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  return dd + '.' + mm + '.' + yyyy;
+}
+
+function addMonths(date, n){
+  const d = new Date(date.getTime());
+  d.setMonth(d.getMonth() + n);
+  return d;
+}
+
+function buildPaymentSchedule(amount, term, startDate){
+  const schedule = [];
+  const base = Math.floor(amount / term);
+  let remaining = amount;
+  for(let i = 1; i <= term; i++){
+    const isLast = (i === term);
+    const installment = isLast ? remaining : base;
+    remaining -= installment;
+    const dueDate = addMonths(startDate, i);
+    schedule.push({
+      ay: i,
+      tarix: formatDateAZ(dueDate),
+      odenis: installment,
+      odenilibMeblegh: 0,
+      qaliq: Math.max(0, remaining),
+      odenilib: false
+    });
+  }
+  return schedule;
+}
+
+function parseAZDate(value){
+  const match = String(value || '').trim().match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+  if(!match) return null;
+  const d = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+  if(d.getFullYear() !== Number(match[3]) || d.getMonth() !== Number(match[2]) - 1 || d.getDate() !== Number(match[1])) return null;
+  return d;
+}
+
+function getCreditStartDate(credit){
+  return parseAZDate(credit.verilmeTarixi) || new Date(credit.yaradilmaTarixi || Date.now());
+}
+
+function ensureCreditSchedule(credit){
+  if(!credit.schedule || !credit.schedule.length){
+    credit.schedule = buildPaymentSchedule(credit.meblegh || 0, credit.muddet || 1, getCreditStartDate(credit));
+  }
+  credit.schedule.forEach(row => {
+    row.odenilibMeblegh = Number(row.odenilibMeblegh || 0);
+    row.qaliq = Math.max(0, Number(row.odenis || 0) - row.odenilibMeblegh);
+    row.odenilib = row.qaliq <= 0;
+  });
+  const nextUnpaidRow = credit.schedule.find(row => !row.odenilib);
+  credit.novbetiOdenisTarixi = nextUnpaidRow ? nextUnpaidRow.tarix : null;
+  return credit;
+}
+
+/* ============================================================
+   ÇATIŞMAYAN MƏLUMAT SİYAHISI (sənəd üçün tələb olunan sahələr)
+   ============================================================ */
+function requiredDocFieldsFor(typeKey){
+  const base = [
+    {id:'telefon', label:'Telefon', type:'text'},
+    {id:'unvan', label:'Ünvan', type:'text'}
+  ];
+  if(typeKey === 'ticaret'){
+    base.push({id:'mehsulAdi', label:'Məhsulun adı', type:'text'});
+    base.push({id:'mehsulKodu', label:'Məhsulun kodu', type:'text'});
+    base.push({id:'ilkinOdenis', label:'İlkin ödəniş (AZN)', type:'number'});
+  }
+  if(typeKey === 'biznes'){
+    base.push({id:'voen', label:'VÖEN (Biznes Krediti üçün)', type:'text'});
+  }
+  return base;
+}
+
+function findMissingFields(customer, typeKey){
+  const required = requiredDocFieldsFor(typeKey);
+  return required.filter(f => !(customer[f.id] && String(customer[f.id]).trim().length > 0));
+}
+
+/* ============================================================
+   RƏSMİLƏŞDİRMƏ AXINI
+   ============================================================ */
+function showDocStep(stepId){
+  document.querySelectorAll('#docOverlay .doc-step').forEach(s => s.classList.remove('active'));
+  document.getElementById(stepId).classList.add('active');
+  document.getElementById('docOverlay').classList.add('show');
+}
+
+function hideDocOverlay(){
+  document.getElementById('docOverlay').classList.remove('show');
+}
+
+function startFormalization(){
+  const fin = window.__currentCustomerFin;
+  const typeKey = window.__currentTypeKey;
+  const amount = window.__selectedAmount || window.__currentResult.finalLimit;
+  const termSel = document.getElementById('termSelect');
+  const term = termSel ? (parseInt(termSel.value,10) || 1) : 1;
+  const customer = findCustomerByFin(fin);
+  if(!customer) return;
+
+  const applicationId = generateApplicationId();
+  const app = {
+    applicationId: applicationId,
+    fin: fin,
+    typeKey: typeKey,
+    typeLabel: CREDIT_TYPES[typeKey].label,
+    amount: amount,
+    term: term,
+    monthlyPayment: Math.round(amount / term),
+    guarantor: window.__currentGuarantorForApp || null,
+    documentNumber: null,
+    contractNumber: null,
+    stage: 'rəsmilesdirme',
+    status: 'draft',
+    extra: {},
+    createdAt: new Date().toISOString()
+  };
+  saveApplication(app);
+  localStorage.setItem(ACTIVE_APPLICATION_POINTER_KEY, applicationId);
+  logAudit('Müraciət yaradıldı', {fin: fin, applicationId: applicationId, kreditNovu: typeKey, meblegh: amount, muddet: term});
+
+  startWaitingScreen(function(){
+    proceedAfterWaiting(applicationId);
+  });
+}
+
+function proceedAfterWaiting(applicationId){
+  const app = getApplication(applicationId);
+  if(!app) return;
+  const customer = findCustomerByFin(app.fin);
+  const missing = findMissingFields(customer, app.typeKey);
+  app.status = 'formalizing';
+  saveApplication(app);
+
+  if(missing.length > 0){
+    renderMissingFieldsForm(applicationId, missing);
+    document.getElementById('docOverlayTitle').textContent = 'Əlavə məlumat';
+    showDocStep('docStepMissing');
+  } else {
+    finalizeApplicationAndShowPreview(applicationId);
+  }
+}
+
+function renderMissingFieldsForm(applicationId, missing){
+  const area = document.getElementById('missingFieldsArea');
+  window.__missingApplicationId = applicationId;
+  window.__missingFieldDefs = missing;
+  area.innerHTML = missing.map(f =>
+    '<label>' + escapeHtml(f.label) + '</label><input type="' + f.type + '" id="mf_' + f.id + '">'
+  ).join('');
+  logAudit('Məlumat tələb edildi', {fin: getApplication(applicationId).fin, applicationId: applicationId});
+}
+
+function submitMissingFields(){
+  const applicationId = window.__missingApplicationId;
+  const app = getApplication(applicationId);
+  if(!app) return;
+  const customer = findCustomerByFin(app.fin);
+  const msg = document.getElementById('missingMsg');
+
+  for(const f of window.__missingFieldDefs){
+    const el = document.getElementById('mf_' + f.id);
+    const val = el.value.trim();
+    if(!val){
+      msg.innerHTML = '<div class="msg err">' + escapeHtml(f.label) + ' mütləqdir.</div>';
+      return;
+    }
+    if((f.id === 'telefon') && !isValidAzPhone(val)){
+      msg.innerHTML = '<div class="msg err">Telefon nömrəsi düzgün formatda deyil.</div>';
+      return;
+    }
+    if(f.id === 'mehsulAdi' || f.id === 'mehsulKodu' || f.id === 'voen'){
+      app.extra[f.id] = val;
+    } else if(f.id === 'ilkinOdenis'){
+      app.extra[f.id] = parseFloat(val) || 0;
+    } else {
+      customer[f.id] = val;
+    }
+  }
+
+  const all = getAllCustomers();
+  all[customer.fin] = customer;
+  saveAllCustomers(all);
+  saveApplication(app);
+  logAudit('Məlumat əlavə edildi', {fin: app.fin, applicationId: applicationId});
+
+  finalizeApplicationAndShowPreview(applicationId);
+}
+
+function finalizeApplicationAndShowPreview(applicationId){
+  const app = getApplication(applicationId);
+  if(!app) return;
+
+  const isFirstTime = !app.documentNumber;
+
+  function proceedToShow(){
+    showPreviewNow(applicationId);
+  }
+
+  if(isFirstTime){
+    const customer = findCustomerByFin(app.fin);
+    app.documentNumber = generateDocumentNumber();
+    app.contractNumber = app.documentNumber;
+    app.formalizationDate = new Date().toISOString();
+    app.schedule = buildPaymentSchedule(app.amount, app.term, new Date());
+    app.status = 'documents_ready';
+    saveApplication(app);
+    logAudit('Sənəd hazırlandı', {fin: app.fin, applicationId: applicationId, documentNumber: app.documentNumber, kreditNovu: app.typeKey, meblegh: app.amount, muddet: app.term});
+    startDocumentProcessingScreen(proceedToShow);
+  } else {
+    proceedToShow();
+  }
+}
+
+function showPreviewNow(applicationId){
+  const app = getApplication(applicationId);
+  if(!app) return;
+  const customer = findCustomerByFin(app.fin);
+
+  if(app.stage === 'sertler'){
+    document.getElementById('docOverlayTitle').textContent = '';
+    showDocStep('docStepSuccess');
+    return;
+  }
+
+  renderDocumentPreview(app, customer);
+  document.getElementById('docOverlayTitle').textContent = 'Kredit sənədi';
+  showDocStep('docStepPreview');
+  logAudit('Sənəd preview edildi', {fin: app.fin, applicationId: applicationId, documentNumber: app.documentNumber});
+
+  // preview düyməsini müraciətin mərhələsinə görə uyğunlaşdır
+  const previewCard = document.querySelector('#docStepPreview > .card');
+  if(app.stage === 'sertler' || app.stage === 'sened' || app.stage === 'imza'){
+    previewCard.innerHTML =
+      '<button class="btn" onclick="goToSignStage()">İmzaya keç</button>' +
+      '<button class="btn secondary" style="margin-top:8px;" onclick="downloadCurrentDocument()">Sənədi yüklə</button>';
+  } else {
+    previewCard.innerHTML =
+      '<button class="btn" onclick="goToSertlerStage()">Şərtlərlə tanış ol və davam et</button>' +
+      '<button class="btn secondary" style="margin-top:8px;" onclick="downloadCurrentDocument()">Sənədi yüklə</button>';
+  }
+}
+
+
+/* ============================================================
+   "sertlerdensonrakisorgu.html" MƏRHƏLƏSİ
+   ============================================================ */
+function goToSertlerStage(){
+  const applicationId = localStorage.getItem(ACTIVE_APPLICATION_POINTER_KEY);
+  const app = getApplication(applicationId);
+  if(!app) return;
+  app.stage = 'sertler';
+  saveApplication(app);
+  logAudit('Şərtlər mərhələsinə keçildi', {fin: app.fin, applicationId: applicationId, documentNumber: app.documentNumber});
+  document.getElementById('docOverlayTitle').textContent = '';
+  showDocStep('docStepSuccess');
+}
+
+function goToSignStage(){
+  const applicationId = localStorage.getItem(ACTIVE_APPLICATION_POINTER_KEY);
+  const app = getApplication(applicationId);
+  if(!app) return;
+  app.stage = 'imza';
+  saveApplication(app);
+  document.getElementById('docOverlayTitle').textContent = 'İmza';
+  showDocStep('docStepSign');
+  initSignatureCanvas();
+}
+
+/* ============================================================
+   İMZA (CANVAS)
+   ============================================================ */
+let sigCtx = null;
+let sigDrawing = false;
+let sigHasDrawn = false;
+
+function initSignatureCanvas(){
+  const canvas = document.getElementById('sigCanvas');
+  const wrap = canvas.parentElement;
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = wrap.clientWidth * ratio;
+  canvas.height = 220 * ratio;
+  sigCtx = canvas.getContext('2d');
+  sigCtx.scale(ratio, ratio);
+  sigCtx.lineWidth = 2.2;
+  sigCtx.lineCap = 'round';
+  sigCtx.strokeStyle = '#20212b';
+  sigHasDrawn = false;
+
+  function getPos(e){
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {x: clientX - rect.left, y: clientY - rect.top};
+  }
+  function start(e){
+    e.preventDefault();
+    sigDrawing = true;
+    sigHasDrawn = true;
+    const p = getPos(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(p.x, p.y);
+  }
+  function move(e){
+    if(!sigDrawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    sigCtx.lineTo(p.x, p.y);
+    sigCtx.stroke();
+  }
+  function end(){ sigDrawing = false; }
+
+  canvas.onpointerdown = start;
+  canvas.onpointermove = move;
+  canvas.onpointerup = end;
+  canvas.onpointerleave = end;
+  canvas.ontouchstart = start;
+  canvas.ontouchmove = move;
+  canvas.ontouchend = end;
+  canvas.onmousedown = start;
+  canvas.onmousemove = move;
+  canvas.onmouseup = end;
+}
+
+function clearSignature(){
+  const canvas = document.getElementById('sigCanvas');
+  sigCtx.clearRect(0, 0, canvas.width, canvas.height);
+  sigHasDrawn = false;
+}
+
+function confirmSignature(){
+  if(!sigHasDrawn){
+    alert('Zəhmət olmasa, imza atın.');
+    return;
+  }
+  const applicationId = localStorage.getItem(ACTIVE_APPLICATION_POINTER_KEY);
+  const app = getApplication(applicationId);
+  if(!app) return;
+  const canvas = document.getElementById('sigCanvas');
+  const dataUrl = canvas.toDataURL('image/png');
+
+  const creditId = generateCreditId();
+  saveSignature(applicationId + ':' + creditId, dataUrl);
+  logAudit('İmza çəkildi', {fin: app.fin, applicationId: applicationId, creditId: creditId, documentNumber: app.documentNumber});
+  logAudit('İmza təsdiqləndi', {fin: app.fin, applicationId: applicationId, creditId: creditId, documentNumber: app.documentNumber});
+
+  app.signatureDataUrl = dataUrl;
+  app.signedAt = new Date().toLocaleString('az-AZ');
+  app.stage = 'tamamlandi';
+  app.status = 'signed';
+  saveApplication(app);
+
+  finalizeCredit(app, creditId, dataUrl);
+}
+
+function finalizeCredit(app, creditId, signatureDataUrl){
+  const customer = findCustomerByFin(app.fin);
+  const formalizationDate = app.formalizationDate ? new Date(app.formalizationDate) : new Date();
+  const schedule = app.schedule || buildPaymentSchedule(app.amount, app.term, formalizationDate);
+  const nextDate = schedule[0] ? schedule[0].tarix : null;
+
+  const credit = {
+    creditId: creditId,
+    fin: app.fin,
+    applicationId: app.applicationId,
+    documentNumber: app.documentNumber,
+    contractNumber: app.contractNumber,
+    typeKey: app.typeKey,
+    typeLabel: app.typeLabel,
+    meblegh: app.amount,
+    muddet: app.term,
+    aylıqOdenis: app.monthlyPayment,
+    faiz: 0,
+    qaliqBorc: app.amount,
+    odenilmisMeblegh: 0,
+    paymentHistory: [],
+    novbetiOdenisTarixi: nextDate,
+    status: 'aktiv',
+    verilmeTarixi: formatDateAZ(formalizationDate),
+    bitmeTarixi: schedule.length ? schedule[schedule.length - 1].tarix : formatDateAZ(formalizationDate),
+    yaradilmaTarixi: new Date().toISOString(),
+    schedule: schedule,
+    guarantor: app.guarantor || null,
+    signatureDataUrl: signatureDataUrl
+  };
+  const credits = getCredits();
+  credits.push(credit);
+  saveCredits(credits);
+
+  app.status = 'active';
+  saveApplication(app);
+
+  logAudit('Kredit yaradıldı', {fin: app.fin, applicationId: app.applicationId, creditId: creditId, documentNumber: app.documentNumber, kreditNovu: app.typeKey, meblegh: app.amount, muddet: app.term, status:'aktiv'});
+  logAudit('Kredit təsdiqləndi', {fin: app.fin, applicationId: app.applicationId, creditId: creditId, documentNumber: app.documentNumber, status:'aktiv'});
+
+  document.getElementById('docOverlayTitle').textContent = '';
+  showDocStep('docStepFinal');
+}
+
+/* ============================================================
+   OVERLAY NAVİQASİYA
+   ============================================================ */
+function docOverlayBack(){
+  hideDocOverlay();
+}
+
+function finishToStart(){
+  hideDocOverlay();
+  localStorage.removeItem(ACTIVE_APPLICATION_POINTER_KEY);
+  document.getElementById('axtFin').value = '';
+  document.getElementById('axtKreditNovu').value = '';
+  document.getElementById('axtMsg').innerHTML = '';
+  document.getElementById('axtResultArea').innerHTML = '';
+  switchTab('tab-axtaris', document.querySelector('nav.tabs button[data-tab="tab-axtaris"]'));
+}
+
+/* ============================================================
+   MÜRACİƏTİN AVTOMATİK BƏRPASI (səhifə yenidən açılanda)
+   ============================================================ */
+function resumeActiveApplication(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlAppId = urlParams.get('applicationId');
+  if(urlAppId){
+    localStorage.setItem(ACTIVE_APPLICATION_POINTER_KEY, urlAppId);
+  }
+  const applicationId = localStorage.getItem(ACTIVE_APPLICATION_POINTER_KEY);
+  if(!applicationId) return;
+  const app = getApplication(applicationId);
+  if(!app || app.stage === 'tamamlandi') {
+    localStorage.removeItem(ACTIVE_APPLICATION_POINTER_KEY);
+    return;
+  }
+  logAudit('Həmin mərhələdən geri qayıdıldı', {fin: app.fin, applicationId: applicationId, documentNumber: app.documentNumber});
+  finalizeApplicationAndShowPreview(applicationId);
+}
+
+/* ============================================================
+   "KREDİTLƏR" BÖLMƏSİ — FIN ilə axtarış, ödəniş, artırma
+   ============================================================ */
+function searchCreditsByFin(){
+  const fin = document.getElementById('krFin').value.trim().toUpperCase();
+  const msg = document.getElementById('krMsg');
+  const resultArea = document.getElementById('krResultArea');
+  resultArea.innerHTML = '';
+  if(!fin){
+    msg.innerHTML = '<div class="msg err">Şəxsi kodu daxil edin.</div>';
+    return;
+  }
+  const customer = findCustomerByFin(fin);
+  if(!customer){
+    msg.innerHTML = '<div class="msg err">Bu şəxsi kod üzrə müştəri tapılmadı.</div>';
+    return;
+  }
+  msg.innerHTML = '<div class="msg info">Məlumatlar yoxlanılır...</div>';
+  window.__waitingContext = 'credits';
+  startWaitingScreen(function(){
+    window.__waitingContext = null;
+    msg.innerHTML = '';
+    const credits = getCredits().filter(c => String(c.fin || '').toUpperCase() === fin);
+    const fullName = [customer.ad, customer.soyad].filter(Boolean).join(' ');
+    let customerInfo = '<div class="card"><h2>Müştəri məlumatları</h2>' +
+      '<div class="customer-info-grid">' +
+        infoItem('Ad, Soyad', fullName) +
+        infoItem('Şəxsi kod', customer.fin) +
+      '</div></div>';
+    if(credits.length === 0){
+      resultArea.innerHTML = customerInfo + '<div class="card"><div class="empty-state">Bu müştərinin kreditləri yoxdur.</div></div>';
+      return;
+    }
+    resultArea.innerHTML = customerInfo + credits.map(renderCreditCard).join('');
+  }, {
+    seconds: 3,
+    title: 'Zəhmət olmasa, gözləyin',
+    subtitle: 'Kredit məlumatları yoxlanılır.'
+  });
+}
+
+let creditSearchTimer = null;
+function autoSearchCreditsByFin(){
+  window.clearTimeout(creditSearchTimer);
+  const fin = document.getElementById('krFin').value.trim();
+  if(!fin){
+    document.getElementById('krMsg').innerHTML = '';
+    document.getElementById('krResultArea').innerHTML = '';
+    return;
+  }
+  creditSearchTimer = window.setTimeout(searchCreditsByFin, 180);
+}
+
+function renderCreditCard(c){
+  c = ensureCreditSchedule(c);
+  const isPaidOff = c.status !== 'aktiv';
+  const statusClass = c.status === 'aktiv' ? 'aktiv' : 'baglanib';
+  const statusLabel = c.status === 'aktiv' ? 'Aktiv' : 'Tam ödənilib';
+  const paidAmount = Math.round(c.odenilmisMeblegh || 0);
+  const scheduleHtml = (c.schedule || []).map(row =>
+    '<div class="row2" style="align-items:center;margin-top:6px;">' +
+      '<div>' + escapeHtml(row.tarix) + ' — ' + Math.round(row.odenis) + ' AZN</div>' +
+      '<div style="text-align:right;font-weight:600;color:' + (row.odenilib ? 'var(--green)' : 'var(--text)') + ';">' +
+        (row.odenilib ? '✅' : Math.round(row.odenilibMeblegh || 0) > 0 ? Math.round(row.odenilibMeblegh) + ' AZN' : '') +
+      '</div>' +
+    '</div>'
+  ).join('');
+  let html = '<div class="credit-item" id="credit_' + c.creditId + '">' +
+    '<div class="top-row"><span class="type">' + escapeHtml(c.typeLabel) + '</span>' +
+    '<span class="status ' + statusClass + '">' + statusLabel + '</span></div>' +
+    '<div class="grid">' +
+      infoItem('Sənəd №', c.documentNumber) +
+      infoItem('Müqavilə №', c.contractNumber) +
+      infoItem('Məbləğ', c.meblegh + ' AZN') +
+      infoItem('Aylıq ödəniş', c.aylıqOdenis + ' AZN') +
+      infoItem('Müddət', c.muddet + ' ay') +
+      infoItem('Verilmə tarixi', c.verilmeTarixi || formatDateAZ(getCreditStartDate(c))) +
+      infoItem('Bitmə tarixi', c.bitmeTarixi || (c.schedule.length ? c.schedule[c.schedule.length - 1].tarix : '—')) +
+      infoItem('Ödənilmiş', paidAmount + ' AZN') +
+      infoItem('Qalıq borc', Math.round(c.qaliqBorc) + ' AZN') +
+      infoItem('Növbəti ödəniş', c.novbetiOdenisTarixi || '—') +
+    '</div>';
+  html += '<div class="divider"></div><div class="sector-hint">ÖDƏNİŞ CƏDVƏLİ</div>' + scheduleHtml;
+  if(!isPaidOff){
+    html += '<div class="row2" style="margin-top:10px;">' +
+      '<input type="number" min="1" max="' + c.qaliqBorc + '" placeholder="Məbləğ (AZN)" id="payAmt_' + c.creditId + '">' +
+      '<button class="btn small" onclick="payCredit(\'' + c.creditId + '\')">Ödəniş et</button>' +
+    '</div>' +
+    '<button class="btn small secondary" style="margin-top:8px;" onclick="openIncreaseCredit(\'' + c.creditId + '\')">Krediti artır</button>' +
+    '<div id="increaseArea_' + c.creditId + '"></div>' +
+    '<div id="payMsg_' + c.creditId + '"></div>';
+  } else if(c.status === 'baglanib' && Number(c.qaliqBorc || 0) <= 0){
+    html += '<button class="btn small danger" style="margin-top:10px;" onclick="deletePaidOffCredit(\'' + c.creditId + '\')">Sil</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function payCredit(creditId){
+  const credits = getCredits();
+  const credit = credits.find(c => c.creditId === creditId);
+  if(!credit || credit.status !== 'aktiv') return;
+  ensureCreditSchedule(credit);
+
+  const input = document.getElementById('payAmt_' + creditId);
+  const msg = document.getElementById('payMsg_' + creditId);
+  let amount = parseFloat(input.value);
+
+  if(!amount || amount <= 0){
+    msg.innerHTML = '<div class="msg err">Düzgün ödəniş məbləği daxil edin.</div>';
+    return;
+  }
+  // qalıq borcdan çox ödəniş qəbul edilmir — mənfi qalıq mümkün deyil
+  amount = Math.min(amount, credit.qaliqBorc);
+
+  let toDistribute = amount;
+  (credit.schedule||[]).forEach(row => {
+    if(toDistribute <= 0) return;
+    const rowRemaining = row.odenis - (row.odenilibMeblegh||0);
+    if(rowRemaining <= 0){ row.odenilib = true; return; }
+    const applied = Math.min(toDistribute, rowRemaining);
+    row.odenilibMeblegh = (row.odenilibMeblegh||0) + applied;
+    row.qaliq = Math.max(0, row.odenis - row.odenilibMeblegh);
+    if(row.qaliq <= 0) row.odenilib = true;
+    toDistribute -= applied;
+  });
+
+  credit.odenilmisMeblegh = Math.round((credit.odenilmisMeblegh||0) + amount);
+  credit.qaliqBorc = Math.max(0, Math.round((credit.qaliqBorc - amount) * 100) / 100);
+  credit.paymentHistory = credit.paymentHistory || [];
+  credit.paymentHistory.push({tarix: new Date().toLocaleDateString('az-AZ'), saat: new Date().toLocaleTimeString('az-AZ'), meblegh: amount});
+
+  const nextUnpaidRow = (credit.schedule||[]).find(s => !s.odenilib);
+  credit.novbetiOdenisTarixi = nextUnpaidRow ? nextUnpaidRow.tarix : null;
+
+  if(credit.qaliqBorc <= 0){
+    credit.status = 'baglanib';
+    credit.novbetiOdenisTarixi = null;
+  }
+
+  saveCredits(credits);
+  logAudit('Ödəniş edildi', {fin: credit.fin, creditId: credit.creditId, documentNumber: credit.documentNumber, meblegh: amount, status: credit.status});
+  if(credit.status === 'baglanib'){
+    logAudit('Status dəyişdi', {fin: credit.fin, creditId: credit.creditId, documentNumber: credit.documentNumber, status:'baglanib'});
+  }
+  searchCreditsByFin();
+}
+
+function deletePaidOffCredit(creditId){
+  const credits = getCredits();
+  const index = credits.findIndex(c => c.creditId === creditId);
+  const credit = index >= 0 ? credits[index] : null;
+
+  // Silinmə yalnız tam bağlanmış kreditlər üçün mümkündür.
+  if(!credit || credit.status !== 'baglanib' || Number(credit.qaliqBorc || 0) > 0) return;
+
+  const updatedCredits = credits.filter(c => c.creditId !== creditId);
+  if(updatedCredits.length === credits.length) return;
+  saveCredits(updatedCredits);
+  logAudit('Bağlanmış kredit silindi', {
+    fin: credit.fin,
+    creditId: credit.creditId,
+    documentNumber: credit.documentNumber,
+    meblegh: credit.meblegh,
+    status: 'silinib'
+  });
+
+  const finInput = document.getElementById('krFin');
+  if(finInput){
+    finInput.value = String(credit.fin || '').toUpperCase();
+    searchCreditsByFin();
+  }
+}
+
+function openIncreaseCredit(creditId){
+  const credits = getCredits();
+  const credit = credits.find(c => c.creditId === creditId);
+  if(!credit) return;
+  const customer = findCustomerByFin(credit.fin);
+  if(!customer) return;
+
+  const result = evaluateCreditType(mergeRealCreditsIntoCustomer(customer, getActiveCreditsForFin(customer.fin)), credit.typeKey, {});
+  const area = document.getElementById('increaseArea_' + creditId);
+  if(!result.approved || result.finalLimit <= credit.meblegh){
+    area.innerHTML = '<div class="msg info" style="margin-top:8px;">Hazırda artırım üçün uyğun deyil.</div>';
+    return;
+  }
+  const step = amountStepFor(credit.typeKey);
+  const opts = [];
+  for(let a = credit.meblegh + step; a < result.finalLimit; a += step){ opts.push(a); }
+  opts.push(result.finalLimit);
+
+  area.innerHTML = '<div class="divider"></div>' +
+    '<label>Yeni məbləğ</label>' +
+    '<select id="incAmt_' + creditId + '">' + opts.map(a => '<option value="' + a + '">' + a + ' AZN</option>').join('') + '</select>' +
+    '<button class="btn small" style="margin-top:8px;" onclick="confirmIncreaseCredit(\'' + creditId + '\')">Təsdiqlə</button>';
+}
+
+function confirmIncreaseCredit(creditId){
+  const credits = getCredits();
+  const credit = credits.find(c => c.creditId === creditId);
+  if(!credit) return;
+  const sel = document.getElementById('incAmt_' + creditId);
+  const newAmount = parseFloat(sel.value);
+  const addedAmount = newAmount - credit.meblegh;
+
+  credit.meblegh = newAmount;
+  credit.qaliqBorc = Math.round(credit.qaliqBorc + addedAmount);
+  credit.aylıqOdenis = Math.round(credit.qaliqBorc / credit.muddet);
+  credit.schedule = buildPaymentSchedule(credit.qaliqBorc, credit.muddet, getCreditStartDate(credit));
+  credit.novbetiOdenisTarixi = credit.schedule[0] ? credit.schedule[0].tarix : null;
+  credit.bitmeTarixi = credit.schedule.length ? credit.schedule[credit.schedule.length - 1].tarix : credit.bitmeTarixi;
+
+  saveCredits(credits);
+  logAudit('Kredit artırıldı', {fin: credit.fin, creditId: credit.creditId, documentNumber: credit.documentNumber, meblegh: newAmount, muddet: credit.muddet, status: credit.status});
+  searchCreditsByFin();
+}
+
+/* ============================================================
+   AKTİV KREDİT MƏHDUDİYYƏTİ VƏ MÖVCUD BORCUN SCORING-Ə TƏSİRİ
+   ============================================================ */
+function getActiveCreditsForFin(fin){
+  const normalizedFin = String(fin || '').trim().toUpperCase();
+  return getCredits().filter(c => String(c.fin || '').trim().toUpperCase() === normalizedFin && c.status === 'aktiv');
+}
+
+function mergeRealCreditsIntoCustomer(customer, activeRealCredits){
+  activeRealCredits = activeRealCredits || getActiveCreditsForFin(customer.fin);
+  const clone = Object.assign({}, customer);
+  const extraLoans = activeRealCredits.map(c => ({
+    meblegh: c.qaliqBorc, aylıqOdenis: c.aylıqOdenis, muddet: c.muddet,
+    gecikmeOlub: 'xeyr', maxGecikme: 0, aktivdir: 'beli', qaligMeblegh: c.qaliqBorc
+  }));
+  clone.aktivKreditler = (customer.aktivKreditler||[]).concat(extraLoans);
+  clone.hesablanmisAktivKreditMeblegi = (customer.hesablanmisAktivKreditMeblegi||0) + extraLoans.reduce((s,l)=>s+l.meblegh,0);
+  clone.hesablanmisAktivKreditOdenisi = (customer.hesablanmisAktivKreditOdenisi||0) + extraLoans.reduce((s,l)=>s+l.aylıqOdenis,0);
+  return clone;
+}
+
+/* ============================================================
+   SƏNƏD EMALI EKRANI (10 saniyə)
+   ============================================================ */
+function startDocumentProcessingScreen(onComplete){
+  startWaitingScreen(onComplete, {
+    seconds: 10,
+    title: 'Sənədlər yoxlanılır...',
+    subtitle: 'Zəhmət olmasa gözləyin.',
+    onTick: function(remaining, titleEl, subtitleEl){
+      if(remaining === 3){
+        titleEl.textContent = 'Uğurla hesablandı';
+        subtitleEl.textContent = 'Sənədləriniz hazırlanır.';
+      } else if(remaining === 1){
+        titleEl.textContent = 'Sənəd uğurla hazırlandı';
+      }
+    }
+  });
+}
+
+/* ============================================================
+   MİNİMAL PDF YAZICISI (xarici kitabxana olmadan, vanilla JS)
+   ============================================================ */
+const AZ_TO_LATIN1 = {
+  'ə':'e','Ə':'E','ğ':'g','Ğ':'G','ş':'s','Ş':'S','ı':'i','İ':'I'
+};
+function pdfSafeText(str){
+  str = String(str == null ? '' : str);
+  let out = '';
+  for(let i=0;i<str.length;i++){
+    let ch = str[i];
+    if(AZ_TO_LATIN1[ch] !== undefined) ch = AZ_TO_LATIN1[ch];
+    const code = ch.charCodeAt(0);
+    out += (code <= 255) ? ch : '?';
+  }
+  return out.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+}
+
+function wrapPlainText(text, maxChars){
+  const words = String(text||'').split(/\s+/);
+  const lines = [];
+  let cur = '';
+  words.forEach(w => {
+    if((cur + ' ' + w).trim().length > maxChars){
+      if(cur) lines.push(cur.trim());
+      cur = w;
+    } else {
+      cur = (cur + ' ' + w).trim();
+    }
+  });
+  if(cur) lines.push(cur.trim());
+  return lines;
+}
+
+function buildPdfContentStream(doc){
+  const ops = [];
+  const PAGE_H = 842;
+
+  function text(x, y, size, str, bold){
+    ops.push('BT /' + (bold?'F2':'F1') + ' ' + size + ' Tf 1 0 0 1 ' + x + ' ' + (PAGE_H - y) + ' Tm (' + pdfSafeText(str) + ') Tj ET');
+  }
+  function line(x1,y1,x2,y2){
+    ops.push(x1 + ' ' + (PAGE_H-y1) + ' m ' + x2 + ' ' + (PAGE_H-y2) + ' l S');
+  }
+
+  let y = 50;
+  text(297, y, 15, doc.title, true); y += 10;
+  line(40, y, 555, y); y += 22;
+
+  doc.fieldRows.forEach(row => {
+    text(45, y, 10, row[0] + ':');
+    text(330, y, 10, row[1], true);
+    y += 18;
+  });
+
+  if(doc.optionsList && doc.optionsList.length){
+    y += 4;
+    if(doc.optionsLabel){ text(45, y, 9, doc.optionsLabel + ':', true); y += 14; }
+    doc.optionsList.forEach(opt => {
+      text(45, y, 9.5, (opt.sel ? '(x) ' : '( ) ') + opt.label, opt.sel);
+      y += 14;
+    });
+    y += 6;
+  }
+
+  (doc.blocks || []).forEach(block => {
+    if(block.type === 'subheader'){
+      y += 4;
+      text(45, y, 9, block.text, true); y += 14;
+    } else if(block.type === 'rows'){
+      block.rows.forEach(row => {
+        text(45, y, 10, row[0] + ':');
+        text(330, y, 10, row[1], true);
+        y += 18;
+      });
+      y += 4;
+    } else if(block.type === 'line'){
+      text(45, y, 9.5, block.text); y += 16;
+    } else if(block.type === 'sectionHeader'){
+      y += 6;
+      text(45, y, 8.6, block.text, true); y += 14;
+    } else if(block.type === 'paragraph'){
+      wrapPlainText(block.text, 108).forEach(l => { text(45, y, 8.3, l); y += 12; });
+      y += 6;
+    }
+  });
+
+  if(doc.schedule && doc.schedule.length){
+    text(45, y, 10, 'CƏDVƏL', true); y += 6;
+    const tableTop = y;
+    const colX = [45, 90, 190, 380, 555];
+    const rowH = 16;
+    const rowsToShow = doc.schedule.slice(0, 28);
+    const tableH = rowH * (rowsToShow.length + 1);
+    for(let i=0;i<colX.length-1;i++){ line(colX[i], tableTop, colX[i], tableTop+tableH); }
+    line(colX[colX.length-1], tableTop, colX[colX.length-1], tableTop+tableH);
+    line(45, tableTop, 555, tableTop);
+    const headers = doc.scheduleHeaders || ['Ay','Tarix','Ödəniş Məbləği','Qalıq Borc'];
+    let ry = tableTop + 11;
+    headers.forEach((h,i)=> text(colX[i]+4, ry, 8.5, h, true));
+    line(45, tableTop+rowH, 555, tableTop+rowH);
+    ry += rowH;
+    rowsToShow.forEach(r => {
+      text(colX[0]+4, ry, 8, String(r.ay));
+      text(colX[1]+4, ry, 8, r.tarix);
+      text(colX[2]+4, ry, 8, r.odenis + ' AZN');
+      text(colX[3]+4, ry, 8, r.qaliq + ' AZN');
+      ry += rowH;
+      line(45, ry, 555, ry);
+    });
+    y = ry + 20;
+  }
+
+  if(doc.signatureLines){
+    doc.signatureLines.forEach(l => { text(45, y, 9.5, l); y += 20; });
+  }
+
+  return ops.join('\n');
+}
+
+function buildPdfBytesString(doc){
+  const content = buildPdfContentStream(doc);
+  const objs = {};
+  objs[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+  objs[2] = '<< /Type /Pages /Kids [3 0 R] /Count 1 >>';
+  objs[3] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>';
+  objs[4] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
+  objs[5] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';
+  objs[6] = '<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream';
+
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+  for(let i=1;i<=6;i++){
+    offsets[i] = pdf.length;
+    pdf += i + ' 0 obj\n' + objs[i] + '\nendobj\n';
+  }
+  const xrefStart = pdf.length;
+  pdf += 'xref\n0 7\n0000000000 65535 f \n';
+  for(let i=1;i<=6;i++){
+    pdf += String(offsets[i]).padStart(10,'0') + ' 00000 n \n';
+  }
+  pdf += 'trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n' + xrefStart + '\n%%EOF';
+  return pdf;
+}
+
+function pdfStringToBlob(pdfStr){
+  const bytes = new Uint8Array(pdfStr.length);
+  for(let i=0;i<pdfStr.length;i++) bytes[i] = pdfStr.charCodeAt(i) & 0xFF;
+  return new Blob([bytes], {type:'application/pdf'});
+}
+
+function creditTypeOptionsList(selectedTypeKey){
+  const labels = {
+    ani_avans:'Ani Avans Krediti', istehlak:'İstehlak Krediti', biznes:'Biznes Krediti',
+    aqro:'Aqro Krediti', ortaBiznes:'Orta Biznes Krediti', ticaret:'Ticarət Krediti'
+  };
+  return Object.keys(labels).map(k => ({label: labels[k], sel: k===selectedTypeKey}));
+}
+
+function buildKreditPdfDoc(app, customer){
+  const fullName = [customer.ad, customer.soyad].filter(Boolean).join(' ');
+  const fieldRows = [
+    ['Tarix', formatDateAZ(new Date(app.formalizationDate)) + ' (Valyuta - AZN)'],
+    ['Sənəd №', app.documentNumber],
+    ['Razılaşma İmza', '_________'],
+    ['Müştəri', fullName]
+  ];
+  const KREDIT_SENEDI_TYPE_LABELS = {ani_avans:'Ani Avans Krediti', istehlak:'İstehlak Krediti', biznes:'Biznes Krediti'};
+  const optionsList = Object.keys(KREDIT_SENEDI_TYPE_LABELS).map(k => ({label: KREDIT_SENEDI_TYPE_LABELS[k], sel: k === app.typeKey}));
+
+  const infoRows = [
+    ['Müştəri (A.S.A)', fullName],
+    ['Əlaqə', customer.telefon || '']
+  ];
+  if(app.typeKey === 'biznes'){
+    infoRows.push(['Müştərinin VÖEN-i (Yalnız Biznes Krediti üçün)', (app.extra && app.extra.voen) || '']);
+  }
+  infoRows.push(['FİFD (Faktiki İllik Faiz Dərəcəsi)', '0%']);
+
+  return {
+    title: 'KREDİT SƏNƏDİ Borc',
+    fieldRows: fieldRows,
+    optionsLabel: 'Borcun Növü',
+    optionsList: optionsList,
+    blocks: [
+      {type:'rows', rows: [
+        ['Borc Məbləği', app.amount + ' AZN'],
+        ['Müddət', app.term + ' AY'],
+        ['İllik Faiz', '0%'],
+        ['Komissiya', '0%']
+      ]},
+      {type:'sectionHeader', text:'ÖHDƏLİK VƏ GERİ QAYTARILMA ŞƏRTLƏRİ'},
+      {type:'paragraph', text:'Borc Alan şəxs olaraq təsdiq edirəm ki, yuxarıda göstərilən borc məbləğini tam və faizsiz (0%) olaraq aldım. Götürdüyüm bu borcu təyin olunmuş aylıq müddət ərzində, gecikdirmədən tam şəkildə geri ödəməyi üzərimə götürürəm. Bu sənəd üzrə gecikmələrə görə heç bir pul cəriməsi (faiz) tətbiq edilmir. Lakin borcun qaytarılmaması və ya gecikdirilməsi halında, tərəflər arasında qarşılıqlı razılığa əsasən məsələnin şəffaf tənzimlənməsinə tam razılıq verilir.'},
+      {type:'rows', rows: infoRows}
+    ],
+    schedule: app.schedule,
+    scheduleHeaders: ['Ay','Tarix','Ödəniş Məbləği','Qalıq Borc'],
+    signatureLines: ['Müştəri (İmza): ' + (app.signatureDataUrl ? 'Elektron imza təsdiqlənib — ' + (app.signedAt||'') : '__________________')]
+  };
+}
+
+function buildTicaretPdfDoc(app, customer){
+  const fullName = [customer.ad, customer.soyad].filter(Boolean).join(' ');
+  const ilkin = (app.extra && app.extra.ilkinOdenis) || 0;
+  const fieldRows = [
+    ['Tarix', formatDateAZ(new Date(app.formalizationDate)) + ' (Valyuta - AZN)'],
+    ['Sənəd №', app.documentNumber],
+    ['Razılaşma İmza', '_________'],
+    ['Müştəri', fullName]
+  ];
+  return {
+    title: 'TİCARƏT SƏNƏDİ Hissəli Satış',
+    fieldRows: fieldRows,
+    blocks: [
+      {type:'subheader', text:'MƏHSULUN MƏLUMATLARI'},
+      {type:'rows', rows: [
+        ['Məhsulun Adı', (app.extra && app.extra.mehsulAdi) || ''],
+        ['Məhsulun Kodu', (app.extra && app.extra.mehsulKodu) || ''],
+        ['İlkin Ödəniş', ilkin + ' AZN'],
+        ['Hissəli Ödəniləcək Toplam Məbləğ', app.amount + ' AZN']
+      ]},
+      {type:'line', text:'Müddət: ' + app.term + ' AY   |   İllik Faiz: 0%   |   Komissiya: 0%'},
+      {type:'sectionHeader', text:'ZƏMANƏT VƏ 14 GÜNLÜK QAYTARILMA ŞƏRTLƏRİ'},
+      {type:'paragraph', text:'1. Satılan məhsul Alıcıya yoxlanılaraq, tam işlək, saz və nöqsansız vəziyyətdə təhvil verilir. Məhsulun keyfiyyətinə və zavod qüsurlarına tam zəmanət verilir. Ustadan kənar (istifadəçi tərəfindən vurulan) fiziki zədələr, qırıqlar, çatlamalar və ya maye təması zəmanət öhdəliyinə daxil edilmir.'},
+      {type:'paragraph', text:'2. Alıcı qanuna uyğun olaraq, zavod qüsuru aşkarlanmış məhsulu 14 (on dörd) gün ərzində dəyişdirmək və ya geri qaytara bilər. Bu müddət keçdikdən sonra məhsuldakı hər hansı nasazlıq yalnız rəsmi zəmanət şərtləri daxilində tənzimlənir.'},
+      {type:'sectionHeader', text:'TƏHVİL-TƏSLİM VƏ HİSSƏLİ ÖDƏNİŞ ÖHDƏLİYİ'},
+      {type:'paragraph', text:'Alıcı (Müştəri) olaraq təsdiq edirəm ki, yuxarıda qeyd olunan məhsulu tam, işlək, saz və heç bir vizual/texniki nöqsanı olmadan yoxlayaraq rəsmən təhvil aldım. Məhsulun hissəli ödəniş məbləğini təyin olunmuş müddət ərzində, gecikdirmədən tam şəkildə geri ödəməyi üzərimə götürürəm. Bu sənəd üzrə gecikmələrə görə heç bir pul cəriməsi (faiz) tətbiq edilmir. Lakin ödənişin gecikdirilməsi və ya öhdəliyin yerinə yetirilməməsi halında, tərəflər arasında qarşılıqlı razılığa əsasən məsələnin şəffaf tənzimlənməsinə tam razılıq verilir.'}
+    ],
+    schedule: app.schedule,
+    scheduleHeaders: ['Ay','Tarix','Ödəniş Məbləğ','Qalıq Borc'],
+    signatureLines: ['Müştəri (İmza): ' + (app.signatureDataUrl ? 'Elektron imza təsdiqlənib — ' + (app.signedAt||'') : '_________________')]
+  };
+}
+
+function buildZaminPdfDoc(app, customer){
+  const g = app.guarantor || {};
+  const fullName = [customer.ad, customer.soyad].filter(Boolean).join(' ');
+  const fieldRows = [
+    ['Tarix', formatDateAZ(new Date(app.formalizationDate)) + ' (Valyuta - AZN)'],
+    ['Sənəd №', app.documentNumber + '-Z'],
+    ['Razılaşma İmza(Zamin)', '_________'],
+    ['Müştəri', fullName]
+  ];
+  return {
+    title: 'ZAMİNLİK Borc',
+    fieldRows: fieldRows,
+    blocks: [
+      {type:'subheader', text:'ZAMİNİN MƏLUMATLARI'},
+      {type:'rows', rows: [
+        ['Zamin Olan Şəxsin A.S.A', ((g.ad||'') + ' ' + (g.soyad||'')).trim()],
+        ['Əlaqə Telefonu', g.telefon || ''],
+        ['Zəmanət Verilən Məbləğ', app.amount + ' AZN'],
+        ['Müddət', app.term + ' AY']
+      ]},
+      {type:'sectionHeader', text:'ZAMİNLİK ÖHDƏLİYİ VƏ ŞƏRTLƏRİ'},
+      {type:'paragraph', text:'1. Mən, aşağıda imza edən Zamin şəxs olaraq təsdiq edirəm ki, yuxarıda adı qeyd olunan Əsas Borclunun (Müştərinin) götürdüyü borc öhdəliyi ilə tam tanışam və bu borca könüllü olaraq zamin dururam.'},
+      {type:'paragraph', text:'2. Əsas Borclunun təyin olunmuş müddət ərzində borcunu gecikdirmədən, tam şəkildə geri ödəməsinə maddi və mənəvi olaraq zəmanət verirəm.'},
+      {type:'paragraph', text:'3. Əsas Borclunun borcu tam və ya qismən ödəmədiyi, yaxud yayındığı təqdirdə, tərəflər arasında qarşılıqlı razılığa əsasən, qalıq borc məbləğinin tam şəffaf şəkildə tənzimlənməsini və ödənilməsini Zamin olaraq öz üzərimə götürürəm. Lakin bu sənəd üzrə gecikmələrə görə mənə (Zaminə) də heç bir pul cəriməsi (faiz) tətbiq edilmir.'},
+      {type:'paragraph', text:'Bu sənəd üzrə əldə olunmuş razılaşma və zaminlik öhdəliyi, əsas borc tam şəkildə və şəffaf formada ödənilib bitənə qədər qüvvədə qalır.'},
+      {type:'paragraph', text:'Zamin olan şəxs borclunun ödəmə qrafiki və qalıq borcu barədə istənilən vaxt tam və şəffaf məlumat almaq hüququna malikdir.'},
+      {type:'paragraph', text:'Tərəflər bu sənəddə qeyd olunan bütün şərtləri tam səmimi, öz xoş iradələri ilə qəbul etdiklərini və aralarındakı etibarlılığı uca tutduqlarını təsdiq edirlər.'}
+    ],
+    schedule: null,
+    signatureLines: [
+      'Əsas Borclunun (Müştərinin) Adı, Soyadı: ' + fullName + '   İmzası: ________________',
+      'Zamin Duran Şəxsin Adı, Soyadı: ' + ((g.ad||'') + ' ' + (g.soyad||'')).trim() + '   İmzası: ________________'
+    ]
+  };
+}
+
+/* ============================================================
+   SƏNƏD PREVIEW — HƏQİQİ PDF LIVE GÖRÜNÜŞÜ
+   ============================================================ */
+function renderDocumentPreview(app, customer){
+  const area = document.getElementById('docPreviewArea');
+  area.innerHTML = '';
+  window.__generatedPdfBlobs = {};
+
+  const mainDoc = (app.typeKey === 'ticaret') ? buildTicaretPdfDoc(app, customer) : buildKreditPdfDoc(app, customer);
+  const mainPdfStr = buildPdfBytesString(mainDoc);
+  const mainBlob = pdfStringToBlob(mainPdfStr);
+  const mainUrl = URL.createObjectURL(mainBlob);
+  window.__generatedPdfBlobs.main = {blob: mainBlob, url: mainUrl, name: 'sened_' + app.documentNumber + '.pdf'};
+
+  area.innerHTML += '<div class="card"><h2>Kredit sənədi</h2>' +
+    '<iframe src="' + mainUrl + '" style="width:100%;height:480px;border:1px solid var(--glass-border);border-radius:12px;"></iframe></div>';
+
+  if(app.guarantor){
+    const zDoc = buildZaminPdfDoc(app, customer);
+    const zPdfStr = buildPdfBytesString(zDoc);
+    const zBlob = pdfStringToBlob(zPdfStr);
+    const zUrl = URL.createObjectURL(zBlob);
+    window.__generatedPdfBlobs.guarantor = {blob: zBlob, url: zUrl, name: 'zaminlik_' + app.documentNumber + '.pdf'};
+    area.innerHTML += '<div class="card"><h2>Zaminlik sənədi</h2>' +
+      '<iframe src="' + zUrl + '" style="width:100%;height:420px;border:1px solid var(--glass-border);border-radius:12px;"></iframe></div>';
+  }
+
+  app.documentsGenerated = Object.keys(window.__generatedPdfBlobs).map(k => ({
+    kind: k, fileName: window.__generatedPdfBlobs[k].name, createdAt: new Date().toISOString()
+  }));
+  saveApplication(app);
+}
+
+function downloadCurrentDocument(){
+  if(!window.__generatedPdfBlobs) return;
+  Object.values(window.__generatedPdfBlobs).forEach(item => {
+    const a = document.createElement('a');
+    a.href = item.url;
+    a.download = item.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+  const applicationId = localStorage.getItem(ACTIVE_APPLICATION_POINTER_KEY);
+  const app = getApplication(applicationId);
+  if(app){
+    logAudit('Sənəd yükləndi', {fin: app.fin, applicationId: app.applicationId, documentNumber: app.documentNumber});
+  }
+}
+
+/* ============================================================
+   "KREDİT ƏLAVƏ ET" — Kreditlər bölməsinə əl ilə kredit qeydiyyatı
+   ============================================================ */
+function renderAddCreditForm(){
+  return '<div class="card"><h2>Kredit əlavə et</h2>' +
+    '<label>Şəxsi kod</label><input type="text" id="ac_fin" aria-describedby="personalCodeHintAddCredit">' +
+    '<div id="personalCodeHintAddCredit" class="personal-code-hint">Bu kod şəxsiyyət vəsiqəsinin FIN kodu deyil. Yalnız bu şəxsi sistem daxilində istifadə olunan daxili koddur.</div>' +
+    '<label>Müqavilə nömrəsi</label><input type="text" id="ac_contractNumber" placeholder="____________">' +
+    '<label>Kreditin növü</label>' +
+    '<select id="ac_typeKey">' +
+      '<option value="ani_avans">Ani Avans Krediti</option>' +
+      '<option value="istehlak">İstehlak Krediti</option>' +
+      '<option value="biznes">Biznes Krediti</option>' +
+      '<option value="aqro">Aqro Krediti</option>' +
+      '<option value="ortaBiznes">Orta Biznes Krediti</option>' +
+      '<option value="ticaret">Ticarət Krediti</option>' +
+    '</select>' +
+    '<div class="row2">' +
+      '<div><label>Kreditin məbləği (AZN)</label><input type="number" id="ac_meblegh" min="0" oninput="updateManualEndDatePreview()"></div>' +
+      '<div><label>Müddət (ay)</label><input type="number" id="ac_muddet" min="1" value="1" oninput="updateManualEndDatePreview()"></div>' +
+    '</div>' +
+    '<div class="row2">' +
+      '<div><label>Verilmə tarixi</label><input type="text" id="ac_verilmeTarixi" placeholder="gg.aa.iiii" oninput="updateManualEndDatePreview()"></div>' +
+      '<div><label>Bitmə tarixi</label><input type="text" id="ac_bitmeTarixi" placeholder="Avtomatik hesablanır" readonly></div>' +
+    '</div>' +
+    '<label>Aylıq ödəniş (AZN)</label><input type="number" id="ac_aylıqOdenis" min="0">' +
+    '<button class="btn" onclick="manualAddCredit()">Qeydə al</button>' +
+    '<div id="acMsg"></div>' +
+  '</div>';
+}
+
+function updateManualEndDatePreview(){
+  const endInput = document.getElementById('ac_bitmeTarixi');
+  if(!endInput) return;
+  const amount = parseFloat(document.getElementById('ac_meblegh').value) || 0;
+  const term = parseInt(document.getElementById('ac_muddet').value, 10) || 1;
+  const start = parseAZDate(document.getElementById('ac_verilmeTarixi').value) || new Date();
+  if(amount > 0 && term > 0){
+    const schedule = buildPaymentSchedule(amount, term, start);
+    endInput.value = schedule.length ? schedule[schedule.length - 1].tarix : formatDateAZ(start);
+  } else {
+    endInput.value = '';
+  }
+}
+
+function manualAddCredit(){
+  const msg = document.getElementById('acMsg');
+  const fin = document.getElementById('ac_fin').value.trim().toUpperCase();
+  const contractNumber = document.getElementById('ac_contractNumber').value.trim();
+  const typeKey = document.getElementById('ac_typeKey').value;
+  const meblegh = parseFloat(document.getElementById('ac_meblegh').value) || 0;
+  const muddet = parseInt(document.getElementById('ac_muddet').value, 10) || 1;
+  const verilmeTarixi = document.getElementById('ac_verilmeTarixi').value.trim();
+  const aylıqOdenis = parseFloat(document.getElementById('ac_aylıqOdenis').value) || Math.round(meblegh / muddet);
+
+  if(!fin || !findCustomerByFin(fin)){
+    msg.innerHTML = '<div class="msg err">Bu şəxsi kod üzrə müştəri tapılmadı.</div>';
+    return;
+  }
+  if(!contractNumber){
+    msg.innerHTML = '<div class="msg err">Müqavilə nömrəsini daxil edin.</div>';
+    return;
+  }
+  if(getActiveCreditsForFin(fin).length >= 2){
+    msg.innerHTML = '<div class="msg err">Kredit qeydə alınmadı.</div>';
+    return;
+  }
+  if(meblegh <= 0){
+    msg.innerHTML = '<div class="msg err">Kredit məbləğini daxil edin.</div>';
+    return;
+  }
+
+  const creditId = generateCreditId();
+  const documentNumber = generateDocumentNumber();
+  const startDate = parseAZDate(verilmeTarixi) || new Date();
+  const schedule = buildPaymentSchedule(meblegh, muddet, startDate);
+  const autoBitmeTarixi = schedule.length ? schedule[schedule.length - 1].tarix : formatDateAZ(startDate);
+  const credit = {
+    creditId: creditId,
+    fin: fin,
+    applicationId: null,
+    documentNumber: documentNumber,
+    contractNumber: contractNumber,
+    typeKey: typeKey,
+    typeLabel: CREDIT_TYPES[typeKey].label,
+    meblegh: meblegh,
+    muddet: muddet,
+    aylıqOdenis: aylıqOdenis,
+    faiz: 0,
+    qaliqBorc: meblegh,
+    odenilmisMeblegh: 0,
+    paymentHistory: [],
+    novbetiOdenisTarixi: schedule[0] ? schedule[0].tarix : null,
+    status: 'aktiv',
+    verilmeTarixi: formatDateAZ(startDate),
+    bitmeTarixi: autoBitmeTarixi,
+    yaradilmaTarixi: new Date().toISOString(),
+    schedule: schedule,
+    guarantor: null,
+    signatureDataUrl: null
+  };
+  const credits = getCredits();
+  credits.push(credit);
+  saveCredits(credits);
+  logAudit('Kredit yaradıldı', {fin: fin, creditId: creditId, documentNumber: documentNumber, kreditNovu: typeKey, meblegh: meblegh, muddet: muddet, status:'aktiv'});
+
+  msg.innerHTML = '<div class="msg ok">✓ Kredit qeydə alındı</div>';
+  document.getElementById('krFin').value = fin;
+  searchCreditsByFin();
+}
+
+/* ============================================================
+   BÜDCƏ MƏRHƏLƏSİ — bütün sistem üçün ümumi son maksimum hədd
+   ============================================================ */
+function loadGlobalBudget(){
+  const budgetInput = document.getElementById('budceMeblegi');
+  if(!budgetInput) return;
+  const budget = getGlobalBudget();
+  budgetInput.value = budget != null ? budget : '';
+  document.getElementById('budceMsg').innerHTML = '';
+}
+
+function saveGlobalBudget(){
+  const budget = parseFloat(document.getElementById('budceMeblegi').value);
+  const msg = document.getElementById('budceMsg');
+  if(!Number.isFinite(budget) || budget <= 0){
+    msg.innerHTML = '<div class="msg err">Büdcə 0-dan böyük olmalıdır.</div>';
+    return;
+  }
+  const normalizedBudget = Math.round(budget * 100) / 100;
+  localStorage.setItem(SYSTEM_BUDGET_KEY, String(normalizedBudget));
+  logAudit('Ümumi kredit büdcəsi yadda saxlanıldı', {meblegh: normalizedBudget});
+  msg.innerHTML = '<div class="msg ok">✓ Ümumi büdcə yadda saxlanıldı və bütün müştərilərə tətbiq ediləcək.</div>';
+}
+
+/* ============================================================
+   BİZNES KREDİTİ MÜRACİƏTLƏRİ — müştəri tətbiqindən gələn real məlumatlar
+   ============================================================ */
+function getBusinessApplicationsV2(){
+  try{
+    const value = JSON.parse(localStorage.getItem(BUSINESS_APPLICATIONS_V2_KEY) || '[]');
+    return Array.isArray(value) ? value : Object.values(value || {});
+  }catch(e){
+    return [];
+  }
+}
+
+function businessApplicationStageLabel(stage){
+  return ({
+    application: 'Müraciət mərhələsi',
+    terms: 'Şərtlər seçimi',
+    documents_ready: 'Sənədlər hazırlanır',
+    approved: 'Təsdiqləndi'
+  })[stage] || 'Müraciət mərhələsi';
+}
+
+function businessApplicationStageClass(stage){
+  return stage === 'approved' ? 'ok' : (stage === 'documents_ready' ? 'info' : '');
+}
+
+function renderBusinessApplications(){
+  const area = document.getElementById('applicationsArea');
+  if(!area) return;
+  const apps = getBusinessApplicationsV2().slice().sort((a,b) =>
+    String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || ''))
+  );
+  if(!apps.length){
+    area.innerHTML = '<div class="empty-state">Hələ heç bir müraciət daxil olmayıb.</div>';
+    return;
+  }
+  area.innerHTML = apps.map(app => {
+    const name = app.customerName || [app.customer && app.customer.ad, app.customer && app.customer.soyad].filter(Boolean).join(' ') || '—';
+    const approvedAmount = app.approvedAmount != null ? app.approvedAmount : app.limit;
+    const approvedTerm = app.approvedTerm != null ? app.approvedTerm : app.term;
+    const selectedAmount = app.selectedAmount != null ? app.selectedAmount : app.amount;
+    const selectedTerm = app.selectedTerm != null ? app.selectedTerm : app.term;
+    const monthly = app.monthlyPayment != null ? app.monthlyPayment : (selectedAmount && selectedTerm ? selectedAmount / selectedTerm : '—');
+    const download = app.stage === 'approved' && app.pdfDataUrl
+      ? '<a class="btn small" style="text-decoration:none;text-align:center;margin-top:12px;" href="' + app.pdfDataUrl + '" download="Kredit_Senedi_' + escapeHtml(String(app.contractNumber || app.documentNumber || '')) + '.pdf">Sənədi yüklə</a>'
+      : '';
+    return '<div class="customer-item" style="margin-bottom:12px;">' +
+      '<div class="top-row"><div><div class="name">Biznes Krediti</div><div class="fin">Şəxsi kod: ' + escapeHtml(String(app.fin || '—')) + '</div></div>' +
+      '<span class="status ' + businessApplicationStageClass(app.stage) + '">' + escapeHtml(businessApplicationStageLabel(app.stage)) + '</span></div>' +
+      '<div class="customer-info-grid" style="margin-top:12px;">' +
+        infoItem('Ad soyad', name) +
+        infoItem('Təsdiqlənmiş limit', approvedAmount == null ? '—' : approvedAmount + ' AZN') +
+        infoItem('Seçilmiş məbləğ', selectedAmount == null ? '—' : selectedAmount + ' AZN') +
+        infoItem('Təsdiqlənmiş müddət', approvedTerm == null ? '—' : approvedTerm + ' ay') +
+        infoItem('Seçilmiş müddət', selectedTerm == null ? '—' : selectedTerm + ' ay') +
+        infoItem('Aylıq ödəniş', monthly === '—' ? '—' : Number(monthly).toFixed(2) + ' AZN') +
+        infoItem('Müqavilə nömrəsi', app.contractNumber || app.documentNumber || '—') +
+        infoItem('Cari mərhələ', businessApplicationStageLabel(app.stage)) +
+      '</div>' + download + '</div>';
+  }).join('');
+}
+
+window.addEventListener('storage', function(event){
+  if(event.key === BUSINESS_APPLICATIONS_V2_KEY || event.key === 'moneza_business_credit_admin_records_v1'){
+    renderBusinessApplications();
+  }
+});
+window.setInterval(function(){
+  const panel = document.getElementById('tab-muracietler');
+  const filterInput = document.getElementById('ba-filter-query');
+  if(panel && panel.classList.contains('active') && document.activeElement !== filterInput){
+    renderBusinessApplications();
+  }
+}, 1500);
+
+/* ============================================================
+   INIT
+   ============================================================ */
+initBusinessCategorySelect();
+renderCustomerList();
+renderBusinessApplications();
+resumeActiveApplication();
+</script>
+<div id="adminAuthGate" role="dialog" aria-modal="true" aria-labelledby="adminAuthTitle">
+  <div class="admin-auth-card">
+    <div class="admin-auth-mark" aria-hidden="true">🔒</div>
+    <h2 id="adminAuthTitle">Giriş tələb olunur</h2>
+    <p>İdarəetmə panelini açmaq üçün giriş parolunu daxil edin.</p>
+    <form id="adminAuthForm" novalidate>
+      <label for="adminAuthPassword">Parol</label>
+      <input
+        id="adminAuthPassword"
+        type="password"
+        inputmode="numeric"
+        autocomplete="off"
+        spellcheck="false"
+        aria-describedby="adminAuthError"
+        required>
+      <button class="admin-auth-submit" type="submit">Daxil ol</button>
+      <div id="adminAuthError" class="admin-auth-error" role="alert" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+<script>
+  /* Access gate only; the existing application code above remains unchanged. */
+  (function(){
+    var gate = document.getElementById('adminAuthGate');
+    var form = document.getElementById('adminAuthForm');
+    var input = document.getElementById('adminAuthPassword');
+    var error = document.getElementById('adminAuthError');
+    var card = gate && gate.querySelector('.admin-auth-card');
+    var correctPassword = '102030405060708090111111112026';
+
+    if(!gate || !form || !input) return;
+
+    function focusPassword(){
+      window.setTimeout(function(){
+        input.focus();
+      }, 40);
+    }
+
+    focusPassword();
+    form.addEventListener('submit', function(event){
+      event.preventDefault();
+      if(input.value === correctPassword){
+        document.documentElement.classList.remove('admin-auth-pending');
+        gate.setAttribute('aria-hidden', 'true');
+        input.value = '';
+        error.textContent = '';
+        return;
+      }
+
+      error.textContent = 'Parol düzgün deyil. Yenidən cəhd edin.';
+      input.value = '';
+      if(card){
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+      }
+      focusPassword();
+    });
+  })();
+</script>
+<script id="admin-business-applications-pdf">
+(function(){
+  "use strict";
+  var APPS_KEY="moneza_business_credit_applications_v2";
+  var currentPdfUrl=null;
+  var style=document.createElement("style");
+  style.textContent=
+    ".ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:14px}"+
+    ".ba-field{background:#f7f9fc;border:1px solid #e8edf5;border-radius:10px;padding:9px 11px;min-width:0}"+
+    ".ba-label{display:block;color:#657084;font-size:11px;margin-bottom:4px}.ba-value{display:block;color:#15243b;font-size:13px;font-weight:650;overflow-wrap:anywhere}"+
+    ".ba-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.ba-actions button{cursor:pointer}"+
+    ".ba-dialog-backdrop{position:fixed;inset:0;z-index:2147483646;background:#10182899;display:flex;align-items:center;justify-content:center;padding:18px}"+
+    ".ba-dialog{width:min(100%,620px);max-height:92vh;overflow:auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 18px 60px #0004}"+
+    ".ba-dialog-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.ba-dialog-head h2{margin:0;font-size:18px}"+
+    ".ba-dialog button{border:0;border-radius:9px;padding:10px 14px;font:600 14px inherit;cursor:pointer}.ba-dialog .ba-danger{background:#c93343;color:#fff}.ba-dialog .ba-secondary{background:#edf0f5;color:#263247}"+
+    ".ba-preview{width:100%;height:min(75vh,850px);border:1px solid #d9dfeb;border-radius:10px;background:#f3f5f9}";
+  document.head.appendChild(style);
+
+  function esc(value){
+    return String(value==null?"":value).replace(/[&<>"']/g,function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
+    });
+  }
+  function apps(){
+    try{
+      var value=JSON.parse(localStorage.getItem(APPS_KEY)||"[]");
+      return Array.isArray(value)?value:Object.keys(value||{}).map(function(key){return value[key];});
+    }catch(e){return [];}
+  }
+  function save(list){localStorage.setItem(APPS_KEY,JSON.stringify(list));}
+  function fmt(value){
+    if(value===null||value===undefined||String(value).trim()==="")return "—";
+    return String(value);
+  }
+  function fullName(app){
+    var c=app.customer||{};
+    return app.customerName||app.fullName||c.fullName||[c.ad,c.soyad,c.ataAdi].filter(Boolean).join(" ")||"—";
+  }
+  function field(label,value){
+    return '<div class="ba-field"><span class="ba-label">'+esc(label)+'</span><span class="ba-value">'+esc(fmt(value))+'</span></div>';
+  }
+  function status(app){
+    if(app.status==="Uğurlu"||app.stage==="completed"||app.stage==="approved")return "Uğurlu";
+    return app.status||app.stage||"Müraciət mərhələsi";
+  }
+  function renderBusinessApplications(){
+    var area=document.getElementById("applicationsArea");
+    if(!area)return;
+    var list=apps().filter(function(app){
+      return app&&(["completed","approved"].indexOf(app.stage)>=0||app.status==="Uğurlu"||app.status==="completed");
+    }).sort(function(a,b){return String(b.updatedAt||b.createdAt||"").localeCompare(String(a.updatedAt||a.createdAt||""));});
+    if(!list.length){
+      area.innerHTML='<div class="empty-state">Hələ tamamlanmış müraciət yoxdur.</div>';
+      return;
+    }
+    area.innerHTML=list.map(function(app){
+      var c=app.customer||{},amount=app.selectedAmount!=null?app.selectedAmount:(app.amount!=null?app.amount:app.approvedAmount);
+      var term=app.selectedTerm!=null?app.selectedTerm:(app.term!=null?app.term:app.approvedTerm);
+      var id=String(app.applicationId||"");
+      var html='<div class="customer-item" style="margin-bottom:14px" data-business-app="'+esc(id)+'">'+
+        '<div class="top-row"><div><div class="name">'+esc(fullName(app))+'</div><div class="fin">FİN: '+esc(fmt(app.fin))+' · Sənəd №: '+esc(fmt(app.documentNumber||app.contractNumber))+'</div></div>'+
+        '<span class="status ok">Uğurlu</span></div>'+
+        '<div class="ba-grid">'+
+        field("Tarix",app.date||app.formalizationDate||app.createdAt)+
+        field("Müştəri Ad Soyad Ata adı",fullName(app))+
+        field("Kreditin növü",app.typeLabel||"Biznes Krediti")+
+        field("Məbləğ",amount==null?"—":amount+" AZN")+
+        field("Müddət",term==null?"—":term+" ay")+
+        field("Əlaqə",app.contact||c.telefon||"—")+
+        field("VÖEN",app.voen||"—")+
+        field("1-ci qohum nömrəsi",app.relative1)+
+        field("2-ci qohum nömrəsi",app.relative2)+
+        field("Rəsmi iş yeri",app.officialWorkplace)+
+        field("Biznes fəaliyyət sahəsi",app.businessSector)+
+        field("Alt fəaliyyət sahəsi",app.businessSubSector)+
+        field("Rəsmi aylıq maaş",app.officialMonthlySalary==null?"—":app.officialMonthlySalary+" AZN")+
+        field("Biznesdən aylıq qazanc",app.businessMonthlyIncome==null?"—":app.businessMonthlyIncome+" AZN")+
+        field("Ailədə neçə nəfər var",app.familyCount)+
+        field("Müraciətin statusu",status(app))+
+        '</div><div class="ba-actions">'+
+        '<button class="btn small" type="button" data-ba-action="view" data-ba-id="'+esc(id)+'">PDF-ə bax</button>'+
+         '<button class="btn small" type="button" data-ba-action="download" data-ba-id="'+esc(id)+'">PDF yüklə</button>'+
+         '<button class="btn small" type="button" style="background:#fff0f0;color:#bb2635;border:1px solid #f0c6ca" data-ba-action="delete" data-ba-id="'+esc(id)+'">Sil</button>'+
+        '</div></div>';
+      return html;
+    }).join("");
+  }
+
+  function dateValue(app){
+    var raw=String(app.date||app.formalizationDate||app.createdAt||new Date().toISOString());
+    var match=raw.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+    if(match)return new Date(Number(match[3]),Number(match[2])-1,Number(match[1]));
+    var d=new Date(raw);return isFinite(d.getTime())?d:new Date();
+  }
+  function dateText(date){
+    return String(date.getDate()).padStart(2,"0")+"."+String(date.getMonth()+1).padStart(2,"0")+"."+date.getFullYear();
+  }
+  function monthDate(base,months){
+    var d=new Date(base.getTime()),day=d.getDate();
+    d.setDate(1);d.setMonth(d.getMonth()+months);
+    var last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+    d.setDate(Math.min(day,last));return d;
+  }
+  function scheduleFor(app){
+    var amount=Math.max(0,Math.round(Number(app.selectedAmount!=null?app.selectedAmount:app.amount||app.approvedAmount||0)*100));
+    var term=Math.max(1,Math.floor(Number(app.selectedTerm!=null?app.selectedTerm:app.term||app.approvedTerm||1)));
+    var base=Math.floor(amount/term),remaining=amount,rows=[],date=dateValue(app);
+    for(var i=1;i<=term;i++){
+      var payment=i===term?remaining:base;
+      remaining=Math.max(0,remaining-payment);
+      rows.push({month:i,date:dateText(monthDate(date,i)),payment:payment/100,balance:remaining/100});
+    }
+    return rows;
+  }
+  function canvasPage(){
+    var canvas=document.createElement("canvas");canvas.width=1240;canvas.height=1754;
+    var ctx=canvas.getContext("2d"),margin=74,right=1166;
+    ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.strokeStyle="#222";ctx.lineWidth=2;ctx.strokeRect(42,42,1156,1670);
+    ctx.fillStyle="#101010";ctx.textAlign="left";ctx.textBaseline="alphabetic";
+    function font(size,bold){ctx.font=(bold?"700 ":"400 ")+size+"px Arial,'Segoe UI',sans-serif";}
+    function text(x,y,value,size,bold,align){
+      font(size||22,!!bold);ctx.textAlign=align||"left";ctx.fillText(String(value==null?"":value),x,y);ctx.textAlign="left";
+    }
+    function line(y){ctx.beginPath();ctx.moveTo(margin,y);ctx.lineTo(right,y);ctx.stroke();}
+    function row(y,label,value){
+      font(21,false);ctx.fillText(label,margin,y);font(21,true);ctx.fillText(String(value==null?"":value),520,y);
+      return y+36;
+    }
+    function wrap(value,x,y,width,size,lineHeight,bold){
+      font(size||19,!!bold);var lineText="";
+      String(value||"").split(/\s+/).forEach(function(word){
+        var next=lineText?lineText+" "+word:word;
+        if(lineText&&ctx.measureText(next).width>width){ctx.fillText(lineText,x,y);y+=lineHeight;lineText=word;}
+        else lineText=next;
+      });
+      if(lineText){ctx.fillText(lineText,x,y);y+=lineHeight;}
+      return y;
+    }
+    return {canvas:canvas,ctx:ctx,margin:margin,right:right,text:text,line:line,row:row,wrap:wrap,font:font};
+  }
+  function contractPages(app){
+    var c=app.customer||{},name=fullName(app),amount=Number(app.selectedAmount!=null?app.selectedAmount:app.amount||app.approvedAmount||0);
+    var term=Math.max(1,Math.floor(Number(app.selectedTerm!=null?app.selectedTerm:app.term||app.approvedTerm||1)));
+    var docNo=app.documentNumber||app.contractNumber||"—",startDate=dateValue(app),rows=scheduleFor(app),pages=[];
+    var p=canvasPage(),ctx=p.ctx,M=p.margin,R=p.right,y=95;
+    p.text(620,y,"KREDİT SƏNƏDİ",31,true,"center");p.text(R,y,"Borc",22,false,"right");p.line(118);y=160;
+    y=p.row(y,"Tarix:",dateText(startDate)+" (Valyuta - AZN)");
+    y=p.row(y,"Sənəd №:",docNo);
+    y=p.row(y,"Razılaşma İmza:","________________");
+    y=p.row(y,"Müştəri:",name);
+    y+=14;p.text(M,y,"Borcun Növü:",22,true);y+=31;
+    ["Ani Avans Krediti","İstehlak Krediti","Biznes Krediti"].forEach(function(label){
+      p.text(M+14,y,(label==="Biznes Krediti"?"●":"○")+"  "+label,20,label==="Biznes Krediti");y+=27;
+    });
+    y+=12;y=p.row(y,"Borc Məbləği:",amount.toFixed(2)+" AZN");
+    y=p.row(y,"Müddət:",term+" AY");
+    y=p.row(y,"İllik Faiz:","0%");
+    y=p.row(y,"Komissiya:","0%");
+    y+=14;p.text(620,y,"ÖHDƏLİK VƏ GERİ QAYTARILMA ŞƏRTLƏRİ",21,true,"center");y+=29;
+    y=p.wrap("Borc Alan şəxs olaraq təsdiq edirəm ki, yuxarıda göstərilən borc məbləğini tam və faizsiz (0%) olaraq aldım. Götürdüyüm bu borcu təyin olunmuş aylıq müddət ərzində, gecikdirmədən tam şəkildə geri ödəməyi üzərimə götürürəm. Bu sənəd üzrə gecikmələrə görə heç bir pul cəriməsi (faiz) tətbiq edilmir. Lakin borcun qaytarılmaması və ya gecikdirilməsi halında, tərəflər arasında qarşılıqlı razılığa əsasən məsələnin şəffaf tənzimlənməsinə tam razılıq verilir.",M,y,R-M,18,24,false)+8;
+    y=p.row(y,"Müştəri (A.S.A):",name);
+    y=p.row(y,"Əlaqə:",app.contact||c.telefon||"—");
+    y=p.row(y,"Müştərinin VÖEN-i:",app.voen||"");
+    y=p.row(y,"FİN kod:",app.fin||"—");
+    y+=5;p.text(M,y,"◆ FİFD (Faktiki İllik Faiz Dərəcəsi): 0%",19,true);y+=30;
+    p.text(620,y,"CƏDVƏL",21,true,"center");y+=14;
+    var cols=[M,M+78,M+300,M+665,R],rowHeight=31,firstCount=Math.min(rows.length,Math.max(1,Math.floor((1510-y)/rowHeight)-1));
+    ctx.lineWidth=1;ctx.strokeStyle="#444";ctx.beginPath();ctx.rect(M,y,R-M,rowHeight*(firstCount+1));ctx.stroke();
+    cols.slice(1,-1).forEach(function(x){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+rowHeight*(firstCount+1));ctx.stroke();});
+    ["Ay","Tarix","Ödəniş Məbləği","Qalıq Borc"].forEach(function(label,i){p.text(cols[i]+7,y+21,label,15,true);});
+    rows.slice(0,firstCount).forEach(function(row,index){
+      var ry=y+rowHeight*(index+2)-8;
+      p.text(cols[0]+7,ry,row.month,15,false);
+      p.text(cols[1]+7,ry,row.date,15,false);
+      p.text(cols[2]+7,ry,row.payment.toFixed(2)+" AZN",15,false);
+      p.text(cols[3]+7,ry,row.balance.toFixed(2)+" AZN",15,false);
+    });
+    p.text(M,y+rowHeight*(firstCount+1)+42,"Müştəri (İmza): ______________________________",18,false);
+    pages.push(p.canvas);
+
+    var extra=canvasPage(),ex=extra.ctx,em=extra.margin,er=extra.right,ey=108;
+    extra.text(620,ey,"ƏLAVƏ MƏLUMATLAR",27,true,"center");extra.line(132);ey=180;
+    var extras=[
+      ["FİN kod",app.fin],["Tarix",dateText(startDate)],["Sənəd №",docNo],
+      ["Müştəri Ad Soyad Ata adı",name],["Kreditin növü","Biznes Krediti"],
+      ["Məbləğ",amount.toFixed(2)+" AZN"],["Müddət",term+" ay"],
+      ["Əlaqə",app.contact||c.telefon],["VÖEN",app.voen],
+      ["1-ci qohum nömrəsi",app.relative1],["2-ci qohum nömrəsi",app.relative2],
+      ["Rəsmi iş yeri",app.officialWorkplace],["Biznes fəaliyyət sahəsi",app.businessSector],
+      ["Alt fəaliyyət sahəsi",app.businessSubSector],
+      ["Rəsmi aylıq maaş",app.officialMonthlySalary==null?"":Number(app.officialMonthlySalary).toFixed(2)+" AZN"],
+      ["Biznesdən aylıq qazanc",app.businessMonthlyIncome==null?"":Number(app.businessMonthlyIncome).toFixed(2)+" AZN"],
+      ["Ailədə neçə nəfər var",app.familyCount]
+    ];
+    extras.forEach(function(item){
+      extra.font(18,false);ex.fillStyle="#283246";ex.fillText(item[0]+":",em,ey);
+      ey=extra.wrap(item[1]==null||item[1]===""?"—":String(item[1]),em+330,ey,er-em-340,18,24,true)+8;
+    });
+    ey+=13;extra.line(ey);ey+=35;extra.text(em,ey,"CƏDVƏL — davamı",20,true);ey+=18;
+    var remaining=rows.slice(firstCount),maxRows=20;
+    if(!remaining.length){
+      extra.text(em,ey+20,"Ödəniş cədvəli əvvəlki səhifədə tam göstərilib.",17,false);
+    }else{
+      function drawScheduleRows(target,items,offset){
+        var start=offset,count=Math.min(maxRows,items.length-start),headY=ey;
+        var xcols=[em,em+85,em+310,em+690,er],rh=31;
+        ex.lineWidth=1;ex.strokeStyle="#444";ex.beginPath();ex.rect(em,headY,er-em,rh*(count+1));ex.stroke();
+        xcols.slice(1,-1).forEach(function(x){ex.beginPath();ex.moveTo(x,headY);ex.lineTo(x,headY+rh*(count+1));ex.stroke();});
+        ["Ay","Tarix","Ödəniş Məbləği","Qalıq Borc"].forEach(function(label,i){extra.text(xcols[i]+7,headY+21,label,15,true);});
+        items.slice(start,start+count).forEach(function(row,index){
+          var yy=headY+rh*(index+2)-8;
+          extra.text(xcols[0]+7,yy,row.month,15,false);extra.text(xcols[1]+7,yy,row.date,15,false);
+          extra.text(xcols[2]+7,yy,row.payment.toFixed(2)+" AZN",15,false);extra.text(xcols[3]+7,yy,row.balance.toFixed(2)+" AZN",15,false);
+        });
+        return start+count;
+      }
+      var offset=drawScheduleRows(extra,rows,firstCount);
+      while(offset<rows.length){
+        pages.push(extra.canvas);
+        extra=canvasPage();ex=extra.ctx;em=extra.margin;er=extra.right;ey=145;
+        extra.text(620,105,"ÖDƏNİŞ CƏDVƏLİ — DAVAMI",24,true,"center");extra.line(132);
+        offset=drawScheduleRows(extra,rows,offset);
+      }
+    }
+    pages.push(extra.canvas);
+    return pages;
+  }
+  function pdfBlobFromCanvases(canvases){
+    var objects={};
+    objects[1]="<< /Type /Catalog /Pages 2 0 R >>";
+    var pageRefs=[],next=3;
+    canvases.forEach(function(canvas,index){
+      var pageNo=next,imageNo=next+1,contentNo=next+2;next+=3;
+      pageRefs.push(pageNo+" 0 R");
+      var image=atob(canvas.toDataURL("image/jpeg",0.94).split(",")[1]);
+      var stream="q 595 0 0 842 0 0 cm /Im0 Do Q";
+      objects[pageNo]="<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 "+imageNo+" 0 R >> >> /Contents "+contentNo+" 0 R >>";
+      objects[imageNo]="<< /Type /XObject /Subtype /Image /Width "+canvas.width+" /Height "+canvas.height+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+image.length+" >>\nstream\n"+image+"\nendstream";
+      objects[contentNo]="<< /Length "+stream.length+" >>\nstream\n"+stream+"\nendstream";
+    });
+    objects[2]="<< /Type /Pages /Kids ["+pageRefs.join(" ")+"] /Count "+canvases.length+" >>";
+    var pdf="%PDF-1.4\n%\xFF\xFF\xFF\xFF\n",offsets=[0];
+    for(var i=1;i<next;i++){
+      offsets[i]=pdf.length;pdf+=i+" 0 obj\n"+objects[i]+"\nendobj\n";
+    }
+    var xref=pdf.length;pdf+="xref\n0 "+next+"\n0000000000 65535 f \n";
+    for(var j=1;j<next;j++)pdf+=String(offsets[j]).padStart(10,"0")+" 00000 n \n";
+    pdf+="trailer\n<< /Size "+next+" /Root 1 0 R >>\nstartxref\n"+xref+"\n%%EOF";
+    var bytes=new Uint8Array(pdf.length);
+    for(var k=0;k<pdf.length;k++)bytes[k]=pdf.charCodeAt(k)&255;
+    return new Blob([bytes],{type:"application/pdf"});
+  }
+  function makePdf(app){return pdfBlobFromCanvases(contractPages(app));}
+  function filename(app){return "Kredit_Senedi_"+String(app.documentNumber||app.contractNumber||app.applicationId||"muraciet").replace(/[^A-Za-z0-9_-]/g,"_")+".pdf";}
+  function download(app){
+    var blob=makePdf(app),url=URL.createObjectURL(blob),link=document.createElement("a");
+    link.href=url;link.download=filename(app);document.body.appendChild(link);link.click();link.remove();
+    setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  }
+  function closeModal(){
+    var modal=document.getElementById("ba-modal");
+    if(modal)modal.remove();
+    if(currentPdfUrl){URL.revokeObjectURL(currentPdfUrl);currentPdfUrl=null;}
+  }
+  function preview(app){
+    closeModal();
+    var blob=makePdf(app);currentPdfUrl=URL.createObjectURL(blob);
+    var modal=document.createElement("div");modal.id="ba-modal";modal.className="ba-dialog-backdrop";
+    modal.innerHTML='<div class="ba-dialog" role="dialog" aria-modal="true"><div class="ba-dialog-head"><h2>'+esc(fullName(app))+' — PDF</h2><button type="button" class="ba-secondary" data-ba-close>Bağla</button></div><iframe class="ba-preview" title="Kredit sənədi PDF"></iframe></div>';
+    modal.addEventListener("click",function(event){if(event.target===modal||event.target.closest("[data-ba-close]"))closeModal();});
+    document.body.appendChild(modal);
+    modal.querySelector("iframe").src=currentPdfUrl;
+  }
+  function deletePrompt(id){
+    var existing=document.getElementById("ba-modal");if(existing)existing.remove();
+    var modal=document.createElement("div");modal.id="ba-modal";modal.className="ba-dialog-backdrop";
+     modal.innerHTML='<div class="ba-dialog" role="alertdialog" aria-modal="true"><h2>Silməyə əminsiniz?</h2><p>Yalnız seçilmiş müraciət silinəcək.</p><div class="ba-actions"><button class="ba-danger" type="button" data-ba-confirm> Bəli </button><button class="ba-secondary" type="button" data-ba-close> Xeyr </button></div></div>';
+    modal.addEventListener("click",function(event){
+      if(event.target===modal||event.target.closest("[data-ba-close]")){modal.remove();return;}
+      if(event.target.closest("[data-ba-confirm]")){
+        var list=apps(),index=list.findIndex(function(app){return app&&String(app.applicationId||"")===id;});
+        if(index>=0){list.splice(index,1);save(list);}
+        modal.remove();renderBusinessApplications();
+      }
+    });
+    document.body.appendChild(modal);
+  }
+  document.addEventListener("click",function(event){
+    var button=event.target&&event.target.closest?event.target.closest("[data-ba-action]"):null;
+    if(!button)return;
+    var action=button.getAttribute("data-ba-action"),id=button.getAttribute("data-ba-id");
+    var app=apps().find(function(item){return item&&String(item.applicationId||"")===id;});
+    if(!app)return;
+    if(action==="view")preview(app);
+    if(action==="download")download(app);
+    if(action==="delete")deletePrompt(id);
+  });
+  window.addEventListener("storage",function(event){if(event.key===APPS_KEY)renderBusinessApplications();});
+  window.renderBusinessApplications=renderBusinessApplications;
+  renderBusinessApplications();
+})();
+</script>
+<script id="moneza-admin-final-upgrade">
+(function(){
+  "use strict";
+  var APPS_KEY="moneza_business_credit_applications_v2";
+  var FILTER_KEY="moneza_admin_application_filter_v1";
+  var DATA_KEYS=[
+    "moneza_business_credit_admin_records_v1",
+    "moneza_business_credit_applications_v2",
+    "kredit_musterileri_v1",
+     "kredit_system_budget_v1",
+     "moneza_accounts_v1"
+  ];
+  var filter={field:"fin",query:""};
+  var filterStyle=document.createElement("style");
+  filterStyle.textContent=
+    ".ba-filter{margin:0 0 16px;padding:13px;border:1px solid #e5ebf3;border-radius:14px;background:#f8fbff}"+
+    ".ba-filter-title{font-size:.78rem;color:#657084;font-weight:700;margin-bottom:9px}"+
+    ".ba-filter-row{display:grid;grid-template-columns:minmax(100px,.8fr) minmax(130px,1.5fr) auto auto;gap:7px;align-items:center}"+
+    ".ba-filter-row select,.ba-filter-row input{min-width:0;padding:10px 11px;border:1px solid #d8e2ec;border-radius:10px;background:#fff;color:#183247;font:inherit}"+
+    ".ba-filter-row .btn{margin:0;white-space:nowrap}.ba-filter-reset{background:#fff1f2;color:#bb2635;border:1px solid #f0c6ca}"+
+    "@media(max-width:520px){.ba-filter-row{grid-template-columns:1fr 1fr}.ba-filter-row input{grid-column:1/-1}.ba-filter-row .btn{width:100%}}";
+  document.head.appendChild(filterStyle);
+
+  function esc(value){
+    return String(value==null?"":value).replace(/[&<>"']/g,function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
+    });
+  }
+  function value(value){
+    return value==null||String(value).trim()===""?"—":String(value);
+  }
+  function apps(){
+    try{
+      var raw=JSON.parse(localStorage.getItem(APPS_KEY)||"[]");
+      var list=Array.isArray(raw)?raw:Object.keys(raw||{}).map(function(key){return raw[key];});
+      return list.filter(function(app){
+        return app&&(["completed","approved"].indexOf(app.stage)>=0||
+          app.status==="Uğurlu"||app.status==="completed");
+      });
+    }catch(e){return [];}
+  }
+  function nameOf(app){
+    var c=app.customer||{};
+    return app.customerName||app.fullName||c.fullName||
+      [c.ad,c.soyad,c.ataAdi].filter(Boolean).join(" ")||"—";
+  }
+  function field(label,data){
+    return '<div class="ba-field"><span class="ba-label">'+esc(label)+
+      '</span><span class="ba-value">'+esc(value(data))+'</span></div>';
+  }
+  function filtered(){
+    var query=String(filter.query||"").trim().toLocaleLowerCase("az-AZ");
+    if(!query)return apps();
+    return apps().filter(function(app){
+      var hay=filter.field==="name"?nameOf(app):String(app.fin||"");
+      return hay.toLocaleLowerCase("az-AZ").indexOf(query)>=0;
+    });
+  }
+  function filterMarkup(){
+    return '<div class="ba-filter" aria-label="Müraciət filtri">'+
+      '<div class="ba-filter-title">Müraciət axtarışı</div>'+
+      '<div class="ba-filter-row">'+
+      '<select id="ba-filter-field" aria-label="Filtr sahəsi">'+
+      '<option value="fin"'+(filter.field==="fin"?" selected":"")+'>FİN</option>'+
+      '<option value="name"'+(filter.field==="name"?" selected":"")+'>Ad Soyad</option>'+
+      '</select>'+
+      '<input id="ba-filter-query" type="search" autocomplete="off" value="'+esc(filter.query)+
+      '" placeholder="'+(filter.field==="name"?"Ad Soyad daxil edin":"FİN daxil edin")+'" aria-label="Axtarış mətni">'+
+      '<button type="button" class="btn small" id="ba-filter-search">Axtar</button>'+
+      '<button type="button" class="btn small ba-filter-reset" id="ba-filter-reset" aria-label="Filtri sıfırla">X</button>'+
+      '</div></div>';
+  }
+  function render(){
+    var area=document.getElementById("applicationsArea");
+    if(!area)return;
+    var list=filtered().sort(function(a,b){
+      return String(b.updatedAt||b.createdAt||"").localeCompare(String(a.updatedAt||a.createdAt||""));
+    });
+    var html=filterMarkup();
+    if(!list.length){
+      html+='<div class="empty-state">'+(filter.query?
+        'Axtarışa uyğun müraciət tapılmadı.':'Hələ tamamlanmış müraciət yoxdur.')+'</div>';
+      area.innerHTML=html;bindFilter();return;
+    }
+    html+=list.map(function(app){
+      var c=app.customer||{};
+      var amount=app.selectedAmount!=null?app.selectedAmount:
+        (app.amount!=null?app.amount:app.approvedAmount);
+      var term=app.selectedTerm!=null?app.selectedTerm:
+        (app.term!=null?app.term:app.approvedTerm);
+      var monthly=amount!=null&&term?Number(amount)/Number(term):"—";
+      var id=String(app.applicationId||"");
+      return '<div class="customer-item" style="margin-bottom:14px" data-business-app="'+esc(id)+'">'+
+        '<div class="top-row"><div><div class="name">Biznes Krediti</div>'+
+        '<div class="fin">FİN: '+esc(value(app.fin))+' · Sənəd №: '+esc(value(app.documentNumber||app.contractNumber))+
+        '</div></div><span class="status ok">Uğurlu</span></div>'+
+        '<div class="ba-grid">'+
+        field("FİN",app.fin)+field("Tarix",app.date||app.formalizationDate||app.createdAt)+
+        field("Sənəd №",app.documentNumber||app.contractNumber)+
+        field("Müştəri Ad Soyad Ata adı",nameOf(app))+
+        field("Kreditin növü",app.typeLabel||"Biznes Krediti")+
+        field("Məbləğ",amount==null?"—":amount+" AZN")+
+        field("Müddət",term==null?"—":term+" ay")+
+        field("Aylıq ödəniş",monthly==="—"?"—":Number(monthly).toFixed(2)+" AZN")+
+        field("Əlaqə",app.contact||c.telefon)+field("VÖEN",app.voen)+
+        field("1-ci qohum nömrəsi",app.relative1)+field("2-ci qohum nömrəsi",app.relative2)+
+        field("Rəsmi iş yeri",app.officialWorkplace)+
+        field("Biznes fəaliyyət sahəsi",app.businessSector)+
+        field("Alt fəaliyyət sahəsi",app.businessSubSector)+
+        field("Rəsmi aylıq maaş",app.officialMonthlySalary==null?"—":app.officialMonthlySalary+" AZN")+
+        field("Biznesdən aylıq qazanc",app.businessMonthlyIncome==null?"—":app.businessMonthlyIncome+" AZN")+
+         field("Ailədə neçə nəfər var",app.familyCount)+
+          field("Müraciətin statusu","Uğurlu")+
+          '</div><div class="ba-actions">'+
+          '<button class="btn small" type="button" data-ba-action="view" data-ba-id="'+esc(id)+'">PDF-ə bax</button>'+
+          '<button class="btn small" type="button" data-ba-action="download" data-ba-id="'+esc(id)+'">PDF yüklə</button>'+
+          '<button class="btn small" type="button" style="background:#fff0f0;color:#bb2635;border:1px solid #f0c6ca" data-ba-action="delete" data-ba-id="'+esc(id)+'">Sil</button>'+
+        '</div></div>';
+    }).join("");
+    area.innerHTML=html;bindFilter();
+  }
+  function bindFilter(){
+    var select=document.getElementById("ba-filter-field");
+    var input=document.getElementById("ba-filter-query");
+    var search=document.getElementById("ba-filter-search");
+    var reset=document.getElementById("ba-filter-reset");
+    if(!select||!input||!search||!reset)return;
+    select.onchange=function(){
+      filter.field=select.value;input.placeholder=filter.field==="name"?"Ad Soyad daxil edin":"FİN daxil edin";
+    };
+    search.onclick=function(){filter.query=input.value.trim();render();};
+    input.onkeydown=function(event){if(event.key==="Enter"){event.preventDefault();search.click();}};
+    reset.onclick=function(){filter={field:"fin",query:""};render();};
+  }
+
+  /* Optional central REST synchronisation. The existing local mode remains
+     available when no endpoint is supplied, while Firebase REST URLs work
+     without adding an SDK or changing the existing page structure. */
+  (function(){
+    var endpoint="";
+    try{
+      endpoint=new URLSearchParams(location.search).get("syncUrl")||
+        localStorage.getItem("moneza_sync_endpoint_v1")||"";
+    }catch(e){}
+    endpoint=String(endpoint||"").trim().replace(/\/+$/,"");
+    if(!endpoint)return;
+    try{localStorage.setItem("moneza_sync_endpoint_v1",endpoint);}catch(e){}
+    function read(key){try{return JSON.parse(localStorage.getItem(key)||"null");}catch(e){return null;}}
+    function write(key,data){try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}}
+    function target(){return /\.json(?:\?|$)/i.test(endpoint)?endpoint:endpoint+".json";}
+    function snapshot(){
+      var data={version:1,updatedAt:new Date().toISOString(),data:{}};
+      DATA_KEYS.forEach(function(key){var item=read(key);if(item!==null)data.data[key]=item;});
+      return data;
+    }
+    function merge(remote){
+      if(!remote||typeof remote!=="object"||!remote.data)return;
+      Object.keys(remote.data).forEach(function(key){if(DATA_KEYS.indexOf(key)>=0)write(key,remote.data[key]);});
+      window.dispatchEvent(new Event("moneza-central-sync"));
+      render();
+    }
+    function pull(){fetch(target(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(merge).catch(function(){});}
+    function push(){var body=snapshot();fetch(target(),{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body),keepalive:true}).catch(function(){});}
+    window.addEventListener("storage",function(event){if(DATA_KEYS.indexOf(event.key)>=0){push();render();}});
+    window.addEventListener("moneza-central-sync",push);
+    pull();window.setInterval(function(){pull();push();},12000);
+  })();
+
+  window.renderBusinessApplications=render;
+  window.addEventListener("storage",function(event){
+    if(event.key===APPS_KEY||DATA_KEYS.indexOf(event.key)>=0)render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
